@@ -59,6 +59,7 @@ SET libraryCardNumber = @libraryCardNumberInput,
     phone = @phoneInput
 WHERE patronID = @patronIDInput;
 
+-- Delete a Patron
 DELETE FROM Patrons
 WHERE patronID = @patronIDInput;
 
@@ -118,8 +119,8 @@ WHERE genreID = @genreIDInput;
 
 -- Browse BookCopies
 SELECT bc.copyID, bc.bookID, b.title, bc.acquisitionDate, bc.`condition`, bc.location, bc.status
-FROM BookCopies AS bc
-JOIN Books AS b ON bc.bookID = b.bookID
+FROM BookCopies bc
+JOIN Books b ON bc.bookID = b.bookID
 ORDER BY bc.copyID;
 
 -- Books drop down for selecting bookID
@@ -157,16 +158,16 @@ SELECT l.loanID,
        l.patronID, p.firstName, p.lastName,
        l.checkoutDate, l.dueDate, l.returnDate,
        l.lateFee, l.status
-FROM Loans AS l
-JOIN BookCopies AS bc ON l.copyID = bc.copyID
-JOIN Books AS b ON bc.bookID = b.bookID
-JOIN Patrons AS p ON l.patronID = p.patronID
+FROM Loans l
+JOIN BookCopies bc ON l.copyID = bc.copyID
+JOIN Books b ON bc.bookID = b.bookID
+JOIN Patrons p ON l.patronID = p.patronID
 ORDER BY l.loanID;
 
 -- Copies drop down for selecting copyID
 SELECT bc.copyID, b.title, bc.status
-FROM BookCopies AS bc
-JOIN Books AS b ON bc.bookID = b.bookID
+FROM BookCopies bc
+JOIN Books b ON bc.bookID = b.bookID
 ORDER BY bc.copyID;
 
 -- Patrons drop down for selecting patronID
@@ -202,9 +203,9 @@ WHERE loanID = @loanIDInput;
 
 -- Browse BookAuthors (joined to show Book + Author)
 SELECT ba.bookID, b.title, ba.authorID, a.firstName, a.lastName
-FROM BookAuthors AS ba
-JOIN Books AS b ON ba.bookID = b.bookID
-JOIN Authors AS a ON ba.authorID = a.authorID
+FROM BookAuthors ba
+JOIN Books b ON ba.bookID = b.bookID
+JOIN Authors a ON ba.authorID = a.authorID
 ORDER BY ba.bookID, ba.authorID;
 
 -- Dropdowns
@@ -225,9 +226,9 @@ WHERE bookID = @bookIDInput AND authorID = @authorIDInput;
 
 -- Browse BookGenres (joined to show Book + Genre)
 SELECT bg.bookID, b.title, bg.genreID, g.genreName
-FROM BookGenres AS bg
-JOIN Books AS b ON bg.bookID = b.bookID
-JOIN Genres AS g ON bg.genreID = g.genreID
+FROM BookGenres bg
+JOIN Books b ON bg.bookID = b.bookID
+JOIN Genres g ON bg.genreID = g.genreID
 ORDER BY bg.bookID, bg.genreID;
 
 -- Dropdown
