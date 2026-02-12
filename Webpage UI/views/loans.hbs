@@ -1,1 +1,113 @@
 <h1>Records of loan transactions</h1>
+
+{{! READ table }}
+<table>
+    <thead>
+        <tr>
+            <th>Loan ID</th>
+            <th>Patron</th>
+            <th>Book Title</th>
+            <th>Copy ID</th>
+            <th>Checkout Date</th>
+            <th>Due Date</th>
+            <th>Return Date</th>
+            <th>Late Fee</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {{#each loans}}
+        <tr>
+            <td>{{this.loanID}}</td>
+            <td>{{this.patronName}}</td>
+            <td>{{this.bookTitle}}</td>
+            <td>{{this.copyID}}</td>
+            <td>{{this.checkoutDate}}</td>
+            <td>{{this.dueDate}}</td>
+            <td>{{this.returnDate}}</td>
+            <td>${{this.lateFee}}</td>
+            <td>{{this.status}}</td>
+
+            {{! DELETE form }}
+            <form id='delete_loan_form'>
+                <input type='hidden' name='delete_loan_id' value='{{this.loanID}}' />
+                <td>
+                    <button type='submit'>
+                        Delete
+                    </button>
+                </td>
+            </form>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+{{! CREATE form }}
+<h2>Create New Loan</h2>
+<form class='cuForm' id='create_loan_form'>
+    <label for='copyID'>Book Copy: </label>
+    <select name='copyID' id='copyID' required>
+        <option value='' disabled selected>Select a Copy</option>
+        {{#each availableCopies}}
+        <option value='{{this.copyID}}'>{{this.title}} (ID: {{this.copyID}})</option>
+        {{/each}}
+    </select>
+
+    <label for='patronID'>Patron: </label>
+    <select name='patronID' id='patronID' required>
+        <option value='' disabled selected>Select a Patron</option>
+        {{#each patrons}}
+        <option value='{{this.patronID}}'>{{this.firstName}} {{this.lastName}}</option>
+        {{/each}}
+    </select>
+
+    <label for='checkoutDate'>Checkout Date: </label>
+    <input type='date' name='checkoutDate' id='checkoutDate' required />
+
+    <label for='dueDate'>Due Date: </label>
+    <input type='date' name='dueDate' id='dueDate' required />
+
+    <label for='status'>Status: </label>
+    <select name='status' id='status' required>
+        <option value='' disabled selected>Select Status</option>
+        <option value='Active'>Active</option>
+        <option value='Returned'>Returned</option>
+        <option value='Overdue'>Overdue</option>
+        <option value='Lost'>Lost</option>
+    </select>
+
+    <input type='submit' value='Create Loan' />
+</form>
+
+{{! UPDATE form }}
+<h2>Update a Loan</h2>
+<form class='cuForm' id='update_loan_form'>
+    <label for='update_loan_id'>Loan to Update: </label>
+    <select name='update_loan_id' id='update_loan_id' required>
+        <option value='' disabled selected>Select a Loan</option>
+        {{#each loans}}
+        <option value='{{this.loanID}}' required>
+            ID: {{this.loanID}} - {{this.patronName}} - {{this.bookTitle}}
+        </option>
+        {{/each}}
+    </select>
+
+    <label for='update_returnDate'>Return Date: </label>
+    <input type='date' name='update_returnDate' id='update_returnDate' />
+
+    <label for='update_lateFee'>Late Fee ($): </label>
+    <input type='number' name='update_lateFee' id='update_lateFee' min='0' />
+
+    <label for='update_status'>Status: </label>
+    <select name='update_status' id='update_status' required>
+        <option value='' disabled selected>Select Status</option>
+        <option value='Active'>Active</option>
+        <option value='Returned'>Returned</option>
+        <option value='Overdue'>Overdue</option>
+        <option value='Lost'>Lost</option>
+    </select>
+
+    <input type='submit' value='Update Loan' />
+</form>

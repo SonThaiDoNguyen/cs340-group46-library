@@ -1,1 +1,60 @@
 <h1>Organize genre categories</h1>
+
+{{! READ table }}
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Genre Name</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {{#each genres}}
+        <tr>
+            <td>{{this.genreID}}</td>
+            <td>{{this.genreName}}</td>
+
+            {{! DELETE form }}
+            <form id='delete_genre_form'>
+                <input type='hidden' name='delete_genre_id' value='{{this.genreID}}' />
+                <input type='hidden' name='delete_genre_name' value='{{this.genreName}}' />
+                <td>
+                    <button type='submit'>
+                        Delete
+                    </button>
+                </td>
+            </form>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+{{! CREATE form }}
+<h2>Add New Genre</h2>
+<form class='cuForm' id='create_genre_form'>
+    <label for='genreName'>Genre Name: </label>
+    <input type='text' name='genreName' id='genreName' required />
+
+    <input type='submit' value='Add Genre' />
+</form>
+
+{{! UPDATE form }}
+<h2>Update a Genre</h2>
+<form class='cuForm' id='update_genre_form'>
+    <label for='update_genre_id'>Genre to Update: </label>
+    <select name='update_genre_id' id='update_genre_id' required>
+        <option value='' disabled selected>Select a Genre</option>
+        {{#each genres}}
+        <option value='{{this.genreID}}' required>
+            {{this.genreID}} - {{this.genreName}}
+        </option>
+        {{/each}}
+    </select>
+
+    <label for='update_genreName'>Genre Name: </label>
+    <input type='text' name='update_genreName' id='update_genreName' required />
+
+    <input type='submit' value='Update Genre' />
+</form>
