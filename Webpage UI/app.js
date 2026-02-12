@@ -32,6 +32,66 @@ app.get('/', async function (req, res) {
     }
 });
 
+app.get('/authors', async function (req, res) {
+    try {
+        res.render('authors'); // Render the author.hbs file
+    } catch (error) {
+        console.error('Error rendering page:', error);
+        // Send a generic error message to the browser
+        res.status(500).send('An error occurred while rendering the page.');
+    }
+});
+
+app.get('/book_copies', async function (req, res) {
+    try {
+        res.render('book_copies'); // Render the book_copies.hbs file
+    } catch (error) {
+        console.error('Error rendering page:', error);
+        // Send a generic error message to the browser
+        res.status(500).send('An error occurred while rendering the page.');
+    }
+});
+
+app.get('/books', async function (req, res) {
+    try {
+        res.render('books'); // Render the books.hbs file
+    } catch (error) {
+        console.error('Error rendering page:', error);
+        // Send a generic error message to the browser
+        res.status(500).send('An error occurred while rendering the page.');
+    }
+});
+
+app.get('/genres', async function (req, res) {
+    try {
+        res.render('genres'); // Render the genres.hbs file
+    } catch (error) {
+        console.error('Error rendering page:', error);
+        // Send a generic error message to the browser
+        res.status(500).send('An error occurred while rendering the page.');
+    }
+});
+
+app.get('/loans', async function (req, res) {
+    try {
+        res.render('loans'); // Render the loans.hbs file
+    } catch (error) {
+        console.error('Error rendering page:', error);
+        // Send a generic error message to the browser
+        res.status(500).send('An error occurred while rendering the page.');
+    }
+});
+
+app.get('/patrons', async function (req, res) {
+    try {
+        res.render('patrons'); // Render the patrons.hbs file
+    } catch (error) {
+        console.error('Error rendering page:', error);
+        // Send a generic error message to the browser
+        res.status(500).send('An error occurred while rendering the page.');
+    }
+});
+
 app.get('/bsg-people', async function (req, res) {
     try {
         // Create and execute our queries
