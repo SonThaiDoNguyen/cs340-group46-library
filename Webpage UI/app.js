@@ -34,81 +34,111 @@ app.get('/', async function (req, res) {
 
 app.get('/authors', async function (req, res) {
     try {
-        res.render('authors'); // Render the author.hbs file
-    } catch (error) {
-        console.error('Error rendering page:', error);
-        // Send a generic error message to the browser
-        res.status(500).send('An error occurred while rendering the page.');
-    }
-});
-
-app.get('/book_copies', async function (req, res) {
-    try {
-        res.render('book_copies'); // Render the book_copies.hbs file
-    } catch (error) {
-        console.error('Error rendering page:', error);
-        // Send a generic error message to the browser
-        res.status(500).send('An error occurred while rendering the page.');
-    }
-});
-
-app.get('/book_authors', async function (req, res) {
-    try {
-        res.render('book_authors'); // Render book_authors.hbs
+        // Get Data
+        const query = 'SELECT authorID, firstName, lastName, birthYear FROM Authors;';
+        // Returns [rows, fields]
+        const [rows] = await db.query(query);
+        res.render('authors', { authors: rows });
     } catch (error) {
         console.error('Error rendering page:', error);
         res.status(500).send('An error occurred while rendering the page.');
     }
 });
-
-app.get('/book_genres', async function (req, res) {
-    try {
-        res.render('book_genres'); // Render book_genres.hbs
-    } catch (error) {
-        console.error('Error rendering page:', error);
-        res.status(500).send('An error occurred while rendering the page.');
-    }
-});
+    // Citation for the following:
+    // Date: 2/19/2026
+    // Adapted from Prompt: *insert lecture code* I need to add Sql sample data to this. Describe how I would do it*
+    // Source URL: https://chatgpt.com/
 
 app.get('/books', async function (req, res) {
     try {
-        res.render('books'); // Render the books.hbs file
+        // Get Data
+        const query = 'SELECT bookID, ISBN, title, publicationYear, publisher, bookMedia FROM Books;';
+        // Returns [rows, fields]
+        const [rows] = await db.query(query);
+        res.render('books', { books: rows });
     } catch (error) {
         console.error('Error rendering page:', error);
-        // Send a generic error message to the browser
         res.status(500).send('An error occurred while rendering the page.');
     }
-});
+});    
+
+app.get('/book_authors', async function (req, res) {
+    try {
+        // Get Data
+        const query = 'SELECT bookID, authorID FROM BookAuthors;';
+        // Returns [rows, fields]
+        const [rows] = await db.query(query);
+        res.render('book_authors', { book_authors: rows });
+    } catch (error) {
+        console.error('Error rendering page:', error);
+        res.status(500).send('An error occurred while rendering the page.');
+    }
+});    
+
+app.get('/book_copies', async function (req, res) {
+    try {
+        // Get Data
+        const query = 'SELECT bookID, acquisitionDate, `condition`, location, status FROM BookCopies;';
+        // Returns [rows, fields]
+        const [rows] = await db.query(query);
+        res.render('book_copies', { book_copies: rows });
+    } catch (error) {
+        console.error('Error rendering page:', error);
+        res.status(500).send('An error occurred while rendering the page.');
+    }
+});    
+
+app.get('/book_genres', async function (req, res) {
+    try {
+        // Get Data
+        const query = 'SELECT bookID, genreID FROM BookGenres;';
+        // Returns [rows, fields]
+        const [rows] = await db.query(query);
+        res.render('book_genres', { book_genres: rows });
+    } catch (error) {
+        console.error('Error rendering page:', error);
+        res.status(500).send('An error occurred while rendering the page.');
+    }
+});   
 
 app.get('/genres', async function (req, res) {
     try {
-        res.render('genres'); // Render the genres.hbs file
+        // Get Data
+        const query = 'SELECT genreID, genreName FROM Genres;';
+        // Returns [rows, fields]
+        const [rows] = await db.query(query);
+        res.render('genres', { genres: rows });
     } catch (error) {
         console.error('Error rendering page:', error);
-        // Send a generic error message to the browser
         res.status(500).send('An error occurred while rendering the page.');
     }
-});
+}); 
 
 app.get('/loans', async function (req, res) {
     try {
-        res.render('loans'); // Render the loans.hbs file
+        // Get Data
+        const query = 'SELECT loanID, copyID, patronID, checkoutDate, dueDate, returnDate, lateFee, status FROM Loans;';
+        // Returns [rows, fields]
+        const [rows] = await db.query(query);
+        res.render('loans', { loans: rows });
     } catch (error) {
         console.error('Error rendering page:', error);
-        // Send a generic error message to the browser
         res.status(500).send('An error occurred while rendering the page.');
     }
-});
+}); 
 
 app.get('/patrons', async function (req, res) {
     try {
-        res.render('patrons'); // Render the patrons.hbs file
+        // Get Data
+        const query = 'SELECT patronID, libraryCardNumber, firstName, lastName, email, phone FROM Patrons;';
+        // Returns [rows, fields]
+        const [rows] = await db.query(query);
+        res.render('patrons', { patrons: rows });
     } catch (error) {
         console.error('Error rendering page:', error);
-        // Send a generic error message to the browser
         res.status(500).send('An error occurred while rendering the page.');
     }
-});
+}); 
 
 // ########################################
 // ########## LISTENER
