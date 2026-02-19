@@ -1,0 +1,90 @@
+<h1>Book-Author Relationship</h1>
+
+{{! READ table}}
+<table>
+    <thead>
+        <tr>
+            <th>Book ID</th>
+            <th>Book Title</th>
+            <th>Author ID</th>
+            <th>Author Name</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each bookAuthors}}
+        <tr>
+            <td>{{this.bookID}}</td>
+            <td>{{this.title}}</td>
+            <td>{{this.authorID}}</td>
+            <td>{{this.authorName}}</td>
+
+            {{! DELETE form}}
+            <form id='delete_book_author_form'>
+                <input type='hidden' name='delete_book_id' value='{{this.bookID}}' />
+                <input type='hidden' name='delete_author_id' value='{{this.authorID}}' />
+
+                <td>
+                    <button type='submit'>
+                        Delete
+                    </button>
+                </td>
+            </form>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+{{! CREATE form}}
+<h2>Add Book-Author Relationship</h2>
+<form class='cuForm' id='create_book_author_form'>
+    <label for='bookID'>Book: </label>
+    <select name='bookID' id='bookID' required>
+        <option value='' disabled selected>Select a Book</option>
+        {{#each books}}
+        <option value='{{this.bookID}}'>{{this.title}}</option>
+        {{/each}}
+    </select>
+
+    <label for='authorID'>Author: </label>
+    <select name='authorID' id='authorID' required>
+        <option value='' disabled selected>Select an Author</option>
+        {{#each authors}}
+        <option value='{{this.authorID}}'>{{this.firstName}} {{this.lastName}}</option>
+        {{/each}}
+    </select>
+
+    <input type='submit' value='Add Relationship' />
+</form>
+
+{{! UPDATE form}}
+<h2>Update Book-Author Relationship</h2>
+<form class='cuForm' id='update_book_author_form'>
+    <label for='update_book_id'>Book to Update: </label>
+    <select name='update_book_id' id='update_book_id' required>
+        <option value='' disabled selected>Select a Book</option>
+        {{#each books}}
+        <option value='{{this.bookID}}' required>
+            {{this.bookID}} - {{this.title}}
+        </option>
+        {{/each}}
+    </select>
+
+    <label for='old_author_id'>Current Author: </label>
+    <select name='old_author_id' id='old_author_id' required>
+        <option value='' disabled selected>Select Current Author</option>
+        {{#each authors}}
+        <option value='{{this.authorID}}'>{{this.firstName}} {{this.lastName}}</option>
+        {{/each}}
+    </select>
+
+    <label for='new_author_id'>New Author: </label>
+    <select name='new_author_id' id='new_author_id' required>
+        <option value='' disabled selected>Select New Author</option>
+        {{#each authors}}
+        <option value='{{this.authorID}}'>{{this.firstName}} {{this.lastName}}</option>
+        {{/each}}
+    </select>
+
+    <input type='submit' value='Update Relationship' />
+</form>

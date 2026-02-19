@@ -1,0 +1,91 @@
+<h1>Book-Genre Relationship</h1>
+
+{{! READ table}}
+<table>
+    <thead>
+        <tr>
+            <th>Book ID</th>
+            <th>Book Title</th>
+            <th>Genre ID</th>
+            <th>Genre Name</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {{#each bookGenres}}
+        <tr>
+            <td>{{this.bookID}}</td>
+            <td>{{this.title}}</td>
+            <td>{{this.genreID}}</td>
+            <td>{{this.genreName}}</td>
+
+            {{! DELETE form}}
+            <form id='delete_book_genre_form'>
+                <input type='hidden' name='delete_book_id' value='{{this.bookID}}' />
+                <input type='hidden' name='delete_genre_id' value='{{this.genreID}}' />
+
+                <td>
+                    <button type='submit'>
+                        Delete
+                    </button>
+                </td>
+            </form>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+{{! CREATE form}}
+<h2>Add Book-Genre Relationship</h2>
+<form class='cuForm' id='create_book_genre_form'>
+    <label for='bookID'>Book: </label>
+    <select name='bookID' id='bookID' required>
+        <option value='' disabled selected>Select a Book</option>
+        {{#each books}}
+        <option value='{{this.bookID}}'>{{this.title}}</option>
+        {{/each}}
+    </select>
+
+    <label for='genreID'>Genre: </label>
+    <select name='genreID' id='genreID' required>
+        <option value='' disabled selected>Select a Genre</option>
+        {{#each genres}}
+        <option value='{{this.genreID}}'>{{this.genreName}}</option>
+        {{/each}}
+    </select>
+
+    <input type='submit' value='Add Relationship' />
+</form>
+
+{{! UPDATE form}}
+<h2>Update Book-Genre Relationship</h2>
+<form class='cuForm' id='update_book_genre_form'>
+    <label for='update_book_id'>Book to Update: </label>
+    <select name='update_book_id' id='update_book_id' required>
+        <option value='' disabled selected>Select a Book</option>
+        {{#each books}}
+        <option value='{{this.bookID}}' required>
+            {{this.bookID}} - {{this.title}}
+        </option>
+        {{/each}}
+    </select>
+
+    <label for='old_genre_id'>Current Genre: </label>
+    <select name='old_genre_id' id='old_genre_id' required>
+        <option value='' disabled selected>Select Current Genre</option>
+        {{#each genres}}
+        <option value='{{this.genreID}}'>{{this.genreName}}</option>
+        {{/each}}
+    </select>
+
+    <label for='new_genre_id'>New Genre: </label>
+    <select name='new_genre_id' id='new_genre_id' required>
+        <option value='' disabled selected>Select New Genre</option>
+        {{#each genres}}
+        <option value='{{this.genreID}}'>{{this.genreName}}</option>
+        {{/each}}
+    </select>
+
+    <input type='submit' value='Update Relationship' />
+</form>

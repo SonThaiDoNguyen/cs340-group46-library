@@ -52,6 +52,24 @@ app.get('/book_copies', async function (req, res) {
     }
 });
 
+app.get('/book_authors', async function (req, res) {
+    try {
+        res.render('book_authors'); // Render book_authors.hbs
+    } catch (error) {
+        console.error('Error rendering page:', error);
+        res.status(500).send('An error occurred while rendering the page.');
+    }
+});
+
+app.get('/book_genres', async function (req, res) {
+    try {
+        res.render('book_genres'); // Render book_genres.hbs
+    } catch (error) {
+        console.error('Error rendering page:', error);
+        res.status(500).send('An error occurred while rendering the page.');
+    }
+});
+
 app.get('/books', async function (req, res) {
     try {
         res.render('books'); // Render the books.hbs file
