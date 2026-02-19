@@ -140,6 +140,60 @@ app.get('/patrons', async function (req, res) {
     }
 }); 
 
+// INSERT Routes
+app.post('/authors', async function (req, res) {
+  try {
+    const { firstName, lastName, birthYear } = req.body;
+
+    const query = `
+      INSERT INTO Authors (firstName, lastName, birthYear)
+      VALUES (?, ?, ?);
+    `;
+    await db.query(query, [firstName, lastName, birthYear || null]);
+
+    res.redirect('/authors');
+  } catch (error) {
+    console.error('Error inserting author:', error);
+    res.status(500).send('An error occurred while inserting the author.');
+  }
+});
+
+// UPDATE Routes
+app.post('/authors/update', async function (req, res) {
+  try {
+    const { authorID, firstName, lastName, birthYear } = req.body;
+
+    const query = `
+      UPDATE Authors
+      SET firstName = ?, lastName = ?, birthYear = ?
+      WHERE authorID = ?;
+    `;
+    await db.query(query, [firstName, lastName, birthYear || null, authorID]);
+
+    res.redirect('/authors');
+  } catch (error) {
+    console.error('Error updating author:', error);
+    res.status(500).send('An error occurred while updating the author.');
+  }
+});
+
+// DELETE Routes
+app.post('/authors/delete', async function (req, res) {
+  try {
+    const { authorID } = req.body;
+
+    const query = `DELETE FROM Authors WHERE authorID = ?;`;
+    await db.query(query, [authorID]);
+
+    res.redirect('/authors');
+  } catch (error) {
+    console.error('Error deleting author:', error);
+    res.status(500).send(
+      'Could not delete author. They may be referenced by another table (like BookAuthors).'
+    );
+  }
+});
+
 // ########################################
 // ########## LISTENER
 
