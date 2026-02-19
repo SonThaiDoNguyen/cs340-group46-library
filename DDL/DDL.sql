@@ -27,7 +27,7 @@ CREATE TABLE Books (
   title VARCHAR(255) NOT NULL,
   publicationYear YEAR NULL,
   publisher VARCHAR(100) NULL,
-  bookMedia VARCHAR(50) NOT NULL,
+  bookMedia ENUM('Hardcover','Paperback','E-Book','Audio') NOT NULL,
   CONSTRAINT uq_Books_ISBN UNIQUE (ISBN)
 ) ENGINE=InnoDB;
 
@@ -119,9 +119,9 @@ CREATE TABLE Loans (
 
 -- Books
 INSERT INTO Books (ISBN, title, publicationYear, publisher, bookMedia) VALUES
-('9780439708180', 'Harry Potter and the Sorcerer''s Stone', 1997, 'Scholastic', 'Physical'),
-('9780439064873', 'Harry Potter and the Chamber of Secrets', 1998, 'Scholastic', 'Physical'),
-('9780307743657', 'The Shining', 1977, 'Doubleday', 'Physical');
+('9780439708180', 'Harry Potter and the Sorcerer''s Stone', 1997, 'Scholastic', 'Hardcover'),
+('9780439064873', 'Harry Potter and the Chamber of Secrets', 1998, 'Scholastic', 'Hardcover'),
+('9780307743657', 'The Shining', 1977, 'Doubleday', 'Hardcover');
 
 -- Patrons
 INSERT INTO Patrons (libraryCardNumber, firstName, lastName, email, phone) VALUES
