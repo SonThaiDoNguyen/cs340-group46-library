@@ -21,15 +21,14 @@
             <td>{{this.birthYear}}</td>
 
             {{! DELETE form }}
-            <form id='delete_author_form'>
-                <input type='hidden' name='delete_author_id' value='{{this.authorID}}' />
-                <input type='hidden' name='delete_author_name' value='{{this.firstName}} {{this.lastName}}' />
-                <td>
-                    <button type='submit'>
+            <td>
+                <form class="inlineForm" action="/authors/delete" method="POST">
+                    <input type="hidden" name="authorID" value="{{this.authorID}}" />
+                    <button type="submit" onclick="return confirm('Delete {{this.firstName}} {{this.lastName}}?');">
                         Delete
                     </button>
-                </td>
-            </form>
+                </form>
+            </td>
         </tr>
         {{/each}}
     </tbody>
@@ -37,40 +36,40 @@
 
 {{! CREATE form }}
 <h2>Add New Author</h2>
-<form class='cuForm' id='create_author_form'>
-    <label for='firstName'>First Name: </label>
-    <input type='text' name='firstName' id='firstName' required />
+<form class="cuForm" id="create_author_form" action="/authors" method="POST">
+    <label for="firstName">First Name: </label>
+    <input type="text" name="firstName" id="firstName" required />
 
-    <label for='lastName'>Last Name: </label>
-    <input type='text' name='lastName' id='lastName' required />
+    <label for="lastName">Last Name: </label>
+    <input type="text" name="lastName" id="lastName" required />
 
-    <label for='birthYear'>Birth Year: </label>
-    <input type='number' name='birthYear' id='birthYear' />
+    <label for="birthYear">Birth Year: </label>
+    <input type="number" name="birthYear" id="birthYear" />
 
-    <input type='submit' value='Add Author' />
+    <input type="submit" value="Add Author" />
 </form>
 
 {{! UPDATE form }}
 <h2>Update an Author</h2>
-<form class='cuForm' id='update_author_form'>
-    <label for='update_author_id'>Author to Update: </label>
-    <select name='update_author_id' id='update_author_id' required>
-        <option value='' disabled selected>Select an Author</option>
+<form class="cuForm" id="update_author_form" action="/authors/update" method="POST">
+    <label for="update_author_id">Author to Update: </label>
+    <select name="authorID" id="update_author_id" required>
+        <option value="" disabled selected>Select an Author</option>
         {{#each authors}}
-        <option value='{{this.authorID}}' required>
+        <option value="{{this.authorID}}">
             {{this.authorID}} - {{this.firstName}} {{this.lastName}}
         </option>
         {{/each}}
     </select>
+    
+    <label for="update_firstName">First Name: </label>
+    <input type="text" name="firstName" id="update_firstName" required />
 
-    <label for='update_firstName'>First Name: </label>
-    <input type='text' name='update_firstName' id='update_firstName' required />
+    <label for="update_lastName">Last Name: </label>
+    <input type="text" name="lastName" id="update_lastName" required />
 
-    <label for='update_lastName'>Last Name: </label>
-    <input type='text' name='update_lastName' id='update_lastName' required />
+    <label for="update_birthYear">Birth Year: </label>
+    <input type="number" name="birthYear" id="update_birthYear" />
 
-    <label for='update_birthYear'>Birth Year: </label>
-    <input type='number' name='update_birthYear' id='update_birthYear' />
-
-    <input type='submit' value='Update Author' />
+    <input type="submit" value="Update Author" />
 </form>
