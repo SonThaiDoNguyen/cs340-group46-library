@@ -78,7 +78,7 @@ app.get('/book_authors', async function (req, res) {
 app.get('/book_copies', async function (req, res) {
     try {
         // Get Data
-        const query = 'SELECT bookID, acquisitionDate, `condition`, location, status FROM BookCopies;';
+        const query = 'SELECT copyID, bookID, acquisitionDate, `condition`, location, status FROM BookCopies;';
         // Returns [rows, fields]
         const [rows] = await db.query(query);
         res.render('book_copies', { book_copies: rows });
