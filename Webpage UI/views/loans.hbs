@@ -5,9 +5,8 @@
     <thead>
         <tr>
             <th>Loan ID</th>
-            <th>Patron</th>
-            <th>Book Title</th>
             <th>Copy ID</th>
+            <th>Patron</th>            
             <th>Checkout Date</th>
             <th>Due Date</th>
             <th>Return Date</th>
@@ -21,9 +20,8 @@
         {{#each loans}}
         <tr>
             <td>{{this.loanID}}</td>
-            <td>{{this.patronName}}</td>
-            <td>{{this.bookTitle}}</td>
             <td>{{this.copyID}}</td>
+            <td>{{this.patronID}}</td>
             <td>{{this.checkoutDate}}</td>
             <td>{{this.dueDate}}</td>
             <td>{{this.returnDate}}</td>
@@ -89,7 +87,7 @@
         <option value='' disabled selected>Select a Loan</option>
         {{#each loans}}
         <option value='{{this.loanID}}' required>
-            ID: {{this.loanID}} - {{this.patronName}} - {{this.bookTitle}}
+            ID: {{this.loanID}} - {{this.patronID}} - {{this.bookTitle}}
         </option>
         {{/each}}
     </select>

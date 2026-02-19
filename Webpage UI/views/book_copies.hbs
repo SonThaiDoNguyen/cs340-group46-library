@@ -5,7 +5,7 @@
     <thead>
         <tr>
             <th>Copy ID</th>
-            <th>Book Title</th>
+            <th>Book ID</th>
             <th>Acquisition Date</th>
             <th>Condition</th>
             <th>Location</th>
@@ -18,7 +18,7 @@
         {{#each book_copies}}
         <tr>
             <td>{{this.copyID}}</td>
-            <td>{{this.title}}</td>
+            <td>{{this.bookID}}</td>
             <td>{{this.acquisitionDate}}</td>
             <td>{{this.condition}}</td>
             <td>{{this.location}}</td>
@@ -27,7 +27,7 @@
             {{! DELETE form }}
             <form id='delete_copy_form'>
                 <input type='hidden' name='delete_copy_id' value='{{this.copyID}}' />
-                <input type='hidden' name='delete_copy_title' value='{{this.title}}' />
+                <input type='hidden' name='delete_copy_bookID' value='{{this.bookID}}' />
                 <td>
                     <button type='submit'>
                         Delete
@@ -47,7 +47,7 @@
         <option value='' disabled selected>Select a Book</option>
         <option value='NULL'>&lt; None &gt;</option>
         {{#each books}}
-        <option value='{{this.bookID}}'>{{this.title}}</option>
+        <option value='{{this.bookID}}'>{{this.bookID}}</option>
         {{/each}}
     </select>
 
@@ -87,7 +87,7 @@
         <option value='' disabled selected>Select a Copy</option>
         {{#each copies}}
         <option value='{{this.copyID}}' required>
-            ID: {{this.copyID}} - {{this.title}} ({{this.condition}})
+            ID: {{this.copyID}} - {{this.bookID}} ({{this.condition}})
         </option>
         {{/each}}
     </select>
@@ -97,7 +97,7 @@
         <option value='' disabled selected>Select a Book</option>
         <option value='NULL'>&lt; None &gt;</option>
         {{#each books}}
-        <option value='{{this.bookID}}'>{{this.title}}</option>
+        <option value='{{this.bookID}}'>{{this.bookID}}</option>
         {{/each}}
     </select>
 
