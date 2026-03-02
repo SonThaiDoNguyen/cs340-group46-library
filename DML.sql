@@ -5,7 +5,9 @@
    Variables are denoted with @LikeThisInput to represent values
    that will be supplied by backend code later. */
 
-/* BOOKS */
+/* DML - Database Operations/CRUD */
+
+/*------ BOOKS------- */
 
 -- Browse Books
 SELECT bookID, ISBN, title, publicationYear, publisher, bookMedia
@@ -34,7 +36,7 @@ WHERE bookID = @bookIDInput;
 DELETE FROM Books
 WHERE bookID = @bookIDInput;
 
-/* PATRONS */
+/* -------- PATRONS---------- */
 
 -- Browse Patrons
 SELECT patronID, libraryCardNumber, firstName, lastName, email, phone
@@ -63,7 +65,7 @@ WHERE patronID = @patronIDInput;
 DELETE FROM Patrons
 WHERE patronID = @patronIDInput;
 
-/* AUTHORS */
+/* -----------AUTHORS----------- */
 
 -- Browse Authors
 SELECT authorID, firstName, lastName, birthYear
@@ -90,7 +92,7 @@ WHERE authorID = @authorIDInput;
 DELETE FROM Authors
 WHERE authorID = @authorIDInput;
 
-/* GENRES */
+/* ------------GENRES------------- */
 
 -- Browse Genres
 SELECT genreID, genreName
@@ -115,7 +117,7 @@ WHERE genreID = @genreIDInput;
 DELETE FROM Genres
 WHERE genreID = @genreIDInput;
 
-/* BOOKCOPIES */
+/* -----------BOOKCOPIES------------ */
 
 -- Browse BookCopies
 SELECT bc.copyID, bc.bookID, b.title, bc.acquisitionDate, bc.`condition`, bc.location, bc.status
@@ -150,7 +152,7 @@ WHERE copyID = @copyIDInput;
 DELETE FROM BookCopies
 WHERE copyID = @copyIDInput;
 
-/* LOANS */
+/* ------------LOANS------------- */
 
 -- Browse Loans
 SELECT l.loanID,
@@ -199,7 +201,7 @@ WHERE loanID = @loanIDInput;
 DELETE FROM Loans
 WHERE loanID = @loanIDInput;
 
-/* BookAuthors (junction) */
+/* -----------BookAuthors (junction)------------- */
 
 -- Browse BookAuthors (joined to show Book + Author)
 SELECT ba.bookID, b.title, ba.authorID, a.firstName, a.lastName
@@ -222,7 +224,7 @@ WHERE bookID = @bookIDInput AND authorID = @oldAuthorIDInput;
 DELETE FROM BookAuthors
 WHERE bookID = @bookIDInput AND authorID = @authorIDInput;
 
-/* BookGenres (junction) */
+/* ----------BookGenres (junction)------------- */
 
 -- Browse BookGenres (joined to show Book + Genre)
 SELECT bg.bookID, b.title, bg.genreID, g.genreName
@@ -244,3 +246,53 @@ WHERE bookID = @bookIDInput AND genreID = @oldGenreIDInput;
 
 DELETE FROM BookGenres
 WHERE bookID = @bookIDInput AND genreID = @genreIDInput;
+
+/* ---------------Sample Data------------ */
+
+-- Books
+INSERT INTO Books (ISBN, title, publicationYear, publisher, bookMedia) VALUES
+('9780439708180', 'Harry Potter and the Sorcerer''s Stone', 1997, 'Scholastic', 'Hardcover'),
+('9780439064873', 'Harry Potter and the Chamber of Secrets', 1998, 'Scholastic', 'Hardcover'),
+('9780307743657', 'The Shining', 1977, 'Doubleday', 'Hardcover');
+
+-- Patrons
+INSERT INTO Patrons (libraryCardNumber, firstName, lastName, email, phone) VALUES
+('LC1001', 'Mauricio', 'Gutierrez', 'mauricio.gutierrez@email.com', '5415552001'),
+('LC1002', 'Joshua', 'Cicchinelli', 'joshua.cicchinelli@email.com', '5415552002'),
+('LC1003', 'Son', 'Nguyen', 'son.nguyen@email.com', NULL);
+
+-- Authors
+INSERT INTO Authors (firstName, lastName, birthYear) VALUES
+('J.K.', 'Rowling', 1965),
+('Stephen', 'King', 1947);
+
+-- Genres
+INSERT INTO Genres (genreName) VALUES
+('Fantasy'),
+('Horror'),
+('Fiction');
+
+-- BookCopies
+INSERT INTO BookCopies (bookID, acquisitionDate, `condition`, location, status) VALUES
+(1, '2023-03-01', 'Good', 'Shelf F1', 'Available'),
+(1, '2023-05-12', 'Worn', 'Shelf F1', 'Checked Out'),
+(2, '2022-10-10', 'Good', 'Shelf F2', 'Available'),
+(3, '2021-09-20', 'Good', 'Shelf H1', 'Available');
+
+-- BookAuthors (junction)
+INSERT INTO BookAuthors (bookID, authorID) VALUES
+(1, 1),
+(2, 1), 
+(3, 2);
+
+-- BookGenres (junction)
+INSERT INTO BookGenres (bookID, genreID) VALUES
+(1, 1),
+(2, 1),
+(3, 2);
+
+-- Loans
+INSERT INTO Loans (copyID, patronID, checkoutDate, dueDate, returnDate, lateFee, status) VALUES
+(2, 1, '2026-02-01', '2026-02-15', NULL, 0.00, 'Active'),
+(1, 2, '2025-11-01', '2025-11-15', '2025-11-14', 0.00, 'Returned'),
+(4, 3, '2025-10-10', '2025-10-24', '2025-10-30', 1.50, 'Overdue');

@@ -196,10 +196,7 @@ app.post('/authors/delete', async function (req, res) {
   }
 });
 
-// ########################################
-// ########## New routes for step 4
-
-// RESET Database Route
+// RESET Routes
 app.get('/reset-database', async function (req, res) {
     try {
         // Call the stored procedure to reset the database
