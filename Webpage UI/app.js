@@ -24,7 +24,8 @@ app.set('view engine', '.hbs'); // Use handlebars engine for *.hbs files.
 // READ ROUTES
 app.get('/', async function (req, res) {
     try {
-        res.render('home'); // Render the home.hbs file
+        const resetSuccess = req.query.reset === 'success';
+        res.render('home', { resetSuccess: resetSuccess }); // Render the home.hbs file with reset status
     } catch (error) {
         console.error('Error rendering page:', error);
         // Send a generic error message to the browser
@@ -120,7 +121,8 @@ app.get('/loans', async function (req, res) {
         const query = 'SELECT loanID, copyID, patronID, checkoutDate, dueDate, returnDate, lateFee, status FROM Loans;';
         // Returns [rows, fields]
         const [rows] = await db.query(query);
-        res.render('loans', { loans: rows });
+        const deletedDemo = req.query.deleted === 'demo';
+        res.render('loans', { loans: rows, deletedDemo: deletedDemo });
     } catch (error) {
         console.error('Error rendering page:', error);
         res.status(500).send('An error occurred while rendering the page.');
@@ -193,6 +195,39 @@ app.post('/authors/delete', async function (req, res) {
     );
   }
 });
+
+// ########################################
+// ########## New routes for step 4
+
+// RESET Database Route
+app.get('/reset-database', async function (req, res) {
+    try {
+        // Call the stored procedure to reset the database
+        const query = 'CALL reset_library();'
+        await db.query(query);
+        
+        // Redirect to home page with success message
+        res.redirect('/?reset=success');
+    } catch (error) {
+        console.error("Error resetting database:", error);
+        res.status(500).send("An error occurred while resetting the database.");
+    }
+});
+
+// Demo: delete a specific loan to show RESET works
+app.get('/delete-demo-loan', async function (req, res) {
+    try {
+        // Call the stored procedure to delete the demo loan
+        const query = 'CALL delete_demo_loan();';
+        await db.query(query);
+
+        // Redirect to loans page to show the change
+        res.redirect('/loans?deleted=demo');
+    } catch (error) {
+        console.error("Error deleting demo loan:", error);
+        res.status(500).send("An error occurred while deleting the demo loan.");
+    }
+})
 
 // ########################################
 // ########## LISTENER
