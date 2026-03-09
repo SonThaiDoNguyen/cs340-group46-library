@@ -15,17 +15,15 @@
         <tr>
             <td>{{this.genreID}}</td>
             <td>{{this.genreName}}</td>
-
-            {{! DELETE form }}
-            <form id='delete_genre_form'>
-                <input type='hidden' name='delete_genre_id' value='{{this.genreID}}' />
-                <input type='hidden' name='delete_genre_name' value='{{this.genreName}}' />
-                <td>
-                    <button type='submit'>
+            <td>
+                {{! DELETE form }}
+                <form class="inlineForm" action="/genres/delete" method="POST">
+                    <input type="hidden" name="genreID" value="{{this.genreID}}" />
+                    <button type="submit" onclick="return confirm('Delete {{this.genreName}}?');">
                         Delete
                     </button>
-                </td>
-            </form>
+                </form>
+            </td>
         </tr>
         {{/each}}
     </tbody>
@@ -33,28 +31,26 @@
 
 {{! CREATE form }}
 <h2>Add New Genre</h2>
-<form class='cuForm' id='create_genre_form'>
-    <label for='genreName'>Genre Name: </label>
-    <input type='text' name='genreName' id='genreName' required />
-
-    <input type='submit' value='Add Genre' />
+<form class="cuForm" id="create_genre_form" action="/genres/add" method="POST">
+    <label for="genreName">Genre Name: </label>
+    <input type="text" name="genreName" id="genreName" required />
+    <input type="submit" value="Add Genre" />
 </form>
 
 {{! UPDATE form }}
 <h2>Update a Genre</h2>
-<form class='cuForm' id='update_genre_form'>
-    <label for='update_genre_id'>Genre to Update: </label>
-    <select name='update_genre_id' id='update_genre_id' required>
-        <option value='' disabled selected>Select a Genre</option>
+<form class="cuForm" id="update_genre_form" action="/genres/update" method="POST">
+    <label for="update_genre_id">Genre to Update: </label>
+    <select name="genreID" id="update_genre_id" required>
+        <option value="" disabled selected>Select a Genre</option>
         {{#each genres}}
-        <option value='{{this.genreID}}' required>
+        <option value="{{this.genreID}}">
             {{this.genreID}} - {{this.genreName}}
         </option>
         {{/each}}
     </select>
 
-    <label for='update_genreName'>Genre Name: </label>
-    <input type='text' name='update_genreName' id='update_genreName' required />
-
-    <input type='submit' value='Update Genre' />
+    <label for="update_genreName">Genre Name: </label>
+    <input type="text" name="genreName" id="update_genreName" required />
+    <input type="submit" value="Update Genre" />
 </form>

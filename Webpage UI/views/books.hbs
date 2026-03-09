@@ -27,17 +27,15 @@
             <td>{{this.bookMedia}}</td>
             <td>{{this.authors}}</td>
             <td>{{this.genres}}</td>
-
-            {{! DELETE form }}
-            <form id='delete_book_form'>
-                <input type='hidden' name='delete_book_id' value='{{this.bookID}}' />
-                <input type='hidden' name='delete_book_title' value='{{this.title}}' />
-                <td>
-                    <button type='submit'>
+            <td>
+                {{! DELETE form }}
+                <form class="inlineForm" action="/books/delete" method="POST">
+                    <input type="hidden" name="bookID" value="{{this.bookID}}" />
+                    <button type="submit" onclick="return confirm('Delete {{this.title}}?');">
                         Delete
                     </button>
-                </td>
-            </form>
+                </form>
+            </td>
         </tr>
         {{/each}}
     </tbody>
@@ -45,64 +43,64 @@
 
 {{! CREATE form }}
 <h2>Add New Book</h2>
-<form class='cuForm' id='create_book_form'>
-    <label for='isbn'>ISBN: </label>
-    <input type='text' name='isbn' id='isbn' required />
+<form class="cuForm" id="create_book_form" action="/books/add" method="POST">
+    <label for="isbn">ISBN: </label>
+    <input type="text" name="ISBN" id="isbn" required />
 
-    <label for='title'>Title: </label>
-    <input type='text' name='title' id='title' required />
+    <label for="title">Title: </label>
+    <input type="text" name="title" id="title" required />
 
-    <label for='publicationYear'>Publication Year: </label>
-    <input type='number' name='publicationYear' id='publicationYear' />
+    <label for="publicationYear">Publication Year: </label>
+    <input type="number" name="publicationYear" id="publicationYear" />
 
-    <label for='publisher'>Publisher: </label>
-    <input type='text' name='publisher' id='publisher' />
+    <label for="publisher">Publisher: </label>
+    <input type="text" name="publisher" id="publisher" />
 
-    <label for='bookMedia'>Media Type: </label>
-    <select name='bookMedia' id='bookMedia' required>
-        <option value='' disabled selected>Select Media Type</option>
-        <option value='Hardcover'>Hardcover</option>
-        <option value='Paperback'>Paperback</option>
-        <option value='E-book'>E-book</option>
-        <option value='Audio'>Audio</option>
+    <label for="bookMedia">Media Type: </label>
+    <select name="bookMedia" id="bookMedia" required>
+        <option value="" disabled selected>Select Media Type</option>
+        <option value="Hardcover">Hardcover</option>
+        <option value="Paperback">Paperback</option>
+        <option value="E-book">E-book</option>
+        <option value="Audio">Audio</option>
     </select>
 
-    <input type='submit' value='Add Book' />
+    <input type="submit" value="Add Book" />
 </form>
 
 {{! UPDATE form }}
 <h2>Update a Book</h2>
-<form class='cuForm' id='update_book_form'>
-    <label for='update_book_id'>Book to Update: </label>
-    <select name='update_book_id' id='update_book_id' required>
-        <option value='' disabled selected>Select a Book</option>
+<form class="cuForm" id="update_book_form" action="/books/update" method="POST">
+    <label for="update_book_id">Book to Update: </label>
+    <select name="bookID" id="update_book_id" required>
+        <option value="" disabled selected>Select a Book</option>
         {{#each books}}
-        <option value='{{this.bookID}}' required>
+        <option value="{{this.bookID}}">
             {{this.bookID}} - {{this.title}}
         </option>
         {{/each}}
     </select>
 
-    <label for='update_isbn'>ISBN: </label>
-    <input type='text' name='update_isbn' id='update_isbn' required />
+    <label for="update_isbn">ISBN: </label>
+    <input type="text" name="ISBN" id="update_isbn" required />
 
-    <label for='update_title'>Title: </label>
-    <input type='text' name='update_title' id='update_title' required />
+    <label for="update_title">Title: </label>
+    <input type="text" name="title" id="update_title" required />
 
-    <label for='update_publicationYear'>Publication Year: </label>
-    <input type='number' name='update_publicationYear' id='update_publicationYear' />
+    <label for="update_publicationYear">Publication Year: </label>
+    <input type="number" name="publicationYear" id="update_publicationYear" />
 
-    <label for='update_publisher'>Publisher: </label>
-    <input type='text' name='update_publisher' id='update_publisher' />
+    <label for="update_publisher">Publisher: </label>
+    <input type="text" name="publisher" id="update_publisher" />
 
-    <label for='update_bookMedia'>Media Type: </label>
-    <select name='update_bookMedia' id='update_bookMedia' required>
-        <option value='' disabled selected>Select Media Type</option>
-        <option value='Hardcover'>Hardcover</option>
-        <option value='Paperback'>Paperback</option>
-        <option value='E-book'>E-book</option>
-        <option value='Audio'>Audio</option>
+    <label for="update_bookMedia">Media Type: </label>
+    <select name="bookMedia" id="update_bookMedia" required>
+        <option value="" disabled selected>Select Media Type</option>
+        <option value="Hardcover">Hardcover</option>
+        <option value="Paperback">Paperback</option>
+        <option value="E-book">E-book</option>
+        <option value="Audio">Audio</option>
     </select>
 
-    <input type='submit' value='Update Book' />
+    <input type="submit" value="Update Book" />
 </form>

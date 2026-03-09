@@ -173,61 +173,327 @@ app.get('/patrons', async function (req, res) {
     }
 }); 
 
-// INSERT Routes
-app.post('/authors', async function (req, res) {
-  try {
-    const { firstName, lastName, birthYear } = req.body;
-
-    const query = `
-      INSERT INTO Authors (firstName, lastName, birthYear)
-      VALUES (?, ?, ?);
-    `;
-    await db.query(query, [firstName, lastName, birthYear || null]);
-
-    res.redirect('/authors');
-  } catch (error) {
-    console.error('Error inserting author:', error);
-    res.status(500).send('An error occurred while inserting the author.');
-  }
+// ============ AUTHORS CRUD ==============
+// CREATE
+app.post('/authors/add', async function (req, res) {
+    try {
+        const { firstName, lastName, birthYear } = req.body;
+        const query = `INSERT INTO Authors (firstName, lastName, birthYear) VALUES (?, ?, ?);`;
+        await db.query(query, [firstName, lastName, birthYear || null]);
+        res.redirect('/authors');
+    } catch (error) {
+        console.error('Error inserting author:', error);
+        res.status(500).send('An error occurred while inserting the author.');
+    }
 });
 
-// UPDATE Routes
+// UPDATE
 app.post('/authors/update', async function (req, res) {
-  try {
-    const { authorID, firstName, lastName, birthYear } = req.body;
-
-    const query = `
-      UPDATE Authors
-      SET firstName = ?, lastName = ?, birthYear = ?
-      WHERE authorID = ?;
-    `;
-    await db.query(query, [firstName, lastName, birthYear || null, authorID]);
-
-    res.redirect('/authors');
-  } catch (error) {
-    console.error('Error updating author:', error);
-    res.status(500).send('An error occurred while updating the author.');
-  }
+    try {
+        const { authorID, firstName, lastName, birthYear } = req.body;
+        const query = `UPDATE Authors SET firstName = ?, lastName = ?, birthYear = ? WHERE authorID = ?;`;
+        await db.query(query, [firstName, lastName, birthYear || null, authorID]);
+        res.redirect('/authors');
+    } catch (error) {
+        console.error('Error updating author:', error);
+        res.status(500).send('An error occurred while updating the author.');
+    }
 });
 
-// DELETE Routes
+// DELETE
 app.post('/authors/delete', async function (req, res) {
-  try {
-    const { authorID } = req.body;
-
-    const query = `DELETE FROM Authors WHERE authorID = ?;`;
-    await db.query(query, [authorID]);
-
-    res.redirect('/authors');
-  } catch (error) {
-    console.error('Error deleting author:', error);
-    res.status(500).send(
-      'Could not delete author. They may be referenced by another table (like BookAuthors).'
-    );
-  }
+    try {
+        const { authorID } = req.body;
+        const query = `DELETE FROM Authors WHERE authorID = ?;`;
+        await db.query(query, [authorID]);
+        res.redirect('/authors');
+    } catch (error) {
+        console.error('Error deleting author:', error);
+        res.status(500).send('Could not delete author. They may be referenced by another table.');
+    }
 });
 
-// RESET Routes
+// ============ BOOKS CRUD ==============
+// CREATE
+app.post('/books/add', async function (req, res) {
+    try {
+        const { ISBN, title, publicationYear, publisher, bookMedia } = req.body;
+        const query = `INSERT INTO Books (ISBN, title, publicationYear, publisher, bookMedia) VALUES (?, ?, ?, ?, ?);`;
+        await db.query(query, [ISBN, title, publicationYear || null, publisher || null, bookMedia]);
+        res.redirect('/books');
+    } catch (error) {
+        console.error('Error inserting book:', error);
+        res.status(500).send('An error occurred while inserting the book.');
+    }
+});
+
+// UPDATE
+app.post('/books/update', async function (req, res) {
+    try {
+        const { bookID, ISBN, title, publicationYear, publisher, bookMedia } = req.body;
+        const query = `UPDATE Books SET ISBN = ?, title = ?, publicationYear = ?, publisher = ?, bookMedia = ? WHERE bookID = ?;`;
+        await db.query(query, [ISBN, title, publicationYear || null, publisher || null, bookMedia, bookID]);
+        res.redirect('/books');
+    } catch (error) {
+        console.error('Error updating book:', error);
+        res.status(500).send('An error occurred while updating the book.');
+    }
+});
+
+// DELETE
+app.post('/books/delete', async function (req, res) {
+    try {
+        const { bookID } = req.body;
+        const query = `DELETE FROM Books WHERE bookID = ?;`;
+        await db.query(query, [bookID]);
+        res.redirect('/books');
+    } catch (error) {
+        console.error('Error deleting book:', error);
+        res.status(500).send('Could not delete book. It may have associated records.');
+    }
+});
+
+// ============ BOOKAUTHORS CRUD ==============
+// CREATE
+app.post('/book_authors/add', async function (req, res) {
+    try {
+        const { bookID, authorID } = req.body;
+        const query = `INSERT INTO BookAuthors (bookID, authorID) VALUES (?, ?);`;
+        await db.query(query, [bookID, authorID]);
+        res.redirect('/book_authors');
+    } catch (error) {
+        console.error('Error inserting book-author relationship:', error);
+        res.status(500).send('An error occurred while inserting the relationship.');
+    }
+});
+
+// UPDATE
+app.post('/book_authors/update', async function (req, res) {
+    try {
+        const { bookID, old_authorID, new_authorID } = req.body;
+        const query = `UPDATE BookAuthors SET authorID = ? WHERE bookID = ? AND authorID = ?;`;
+        await db.query(query, [new_authorID, bookID, old_authorID]);
+        res.redirect('/book_authors');
+    } catch (error) {
+        console.error('Error updating book-author relationship:', error);
+        res.status(500).send('An error occurred while updating the relationship.');
+    }
+});
+
+// DELETE
+app.post('/book_authors/delete', async function (req, res) {
+    try {
+        const { bookID, authorID } = req.body;
+        const query = `DELETE FROM BookAuthors WHERE bookID = ? AND authorID = ?;`;
+        await db.query(query, [bookID, authorID]);
+        res.redirect('/book_authors');
+    } catch (error) {
+        console.error('Error deleting book-author relationship:', error);
+        res.status(500).send('An error occurred while deleting the relationship.');
+    }
+});
+
+// ============ BOOKGENRES CRUD ==============
+// CREATE
+app.post('/book_genres/add', async function (req, res) {
+    try {
+        const { bookID, genreID } = req.body;
+        const query = `INSERT INTO BookGenres (bookID, genreID) VALUES (?, ?);`;
+        await db.query(query, [bookID, genreID]);
+        res.redirect('/book_genres');
+    } catch (error) {
+        console.error('Error inserting book-genre relationship:', error);
+        res.status(500).send('An error occurred while inserting the relationship.');
+    }
+});
+
+// UPDATE
+app.post('/book_genres/update', async function (req, res) {
+    try {
+        const { bookID, old_genreID, new_genreID } = req.body;
+        const query = `UPDATE BookGenres SET genreID = ? WHERE bookID = ? AND genreID = ?;`;
+        await db.query(query, [new_genreID, bookID, old_genreID]);
+        res.redirect('/book_genres');
+    } catch (error) {
+        console.error('Error updating book-genre relationship:', error);
+        res.status(500).send('An error occurred while updating the relationship.');
+    }
+});
+
+// DELETE
+app.post('/book_genres/delete', async function (req, res) {
+    try {
+        const { bookID, genreID } = req.body;
+        const query = `DELETE FROM BookGenres WHERE bookID = ? AND genreID = ?;`;
+        await db.query(query, [bookID, genreID]);
+        res.redirect('/book_genres');
+    } catch (error) {
+        console.error('Error deleting book-genre relationship:', error);
+        res.status(500).send('An error occurred while deleting the relationship.');
+    }
+});
+
+// ============ BOOKCOPIES CRUD ==============
+// CREATE
+app.post('/book_copies/add', async function (req, res) {
+    try {
+        const { bookID, acquisitionDate, condition, location, status } = req.body;
+        const query = `INSERT INTO BookCopies (bookID, acquisitionDate, \`condition\`, location, status) VALUES (?, ?, ?, ?, ?);`;
+        await db.query(query, [bookID, acquisitionDate, condition, location, status]);
+        res.redirect('/book_copies');
+    } catch (error) {
+        console.error('Error inserting book copy:', error);
+        res.status(500).send('An error occurred while inserting the book copy.');
+    }
+});
+
+// UPDATE
+app.post('/book_copies/update', async function (req, res) {
+    try {
+        const { copyID, bookID, acquisitionDate, condition, location, status } = req.body;
+        const query = `UPDATE BookCopies SET bookID = ?, acquisitionDate = ?, \`condition\` = ?, location = ?, status = ? WHERE copyID = ?;`;
+        await db.query(query, [bookID, acquisitionDate, condition, location, status, copyID]);
+        res.redirect('/book_copies');
+    } catch (error) {
+        console.error('Error updating book copy:', error);
+        res.status(500).send('An error occurred while updating the book copy.');
+    }
+});
+
+// DELETE
+app.post('/book_copies/delete', async function (req, res) {
+    try {
+        const { copyID } = req.body;
+        const query = `DELETE FROM BookCopies WHERE copyID = ?;`;
+        await db.query(query, [copyID]);
+        res.redirect('/book_copies');
+    } catch (error) {
+        console.error('Error deleting book copy:', error);
+        res.status(500).send('Could not delete book copy. It may have associated loans.');
+    }
+});
+
+// ============ GENRES CRUD ==============
+// CREATE
+app.post('/genres/add', async function (req, res) {
+    try {
+        const { genreName } = req.body;
+        const query = `INSERT INTO Genres (genreName) VALUES (?);`;
+        await db.query(query, [genreName]);
+        res.redirect('/genres');
+    } catch (error) {
+        console.error('Error inserting genre:', error);
+        res.status(500).send('An error occurred while inserting the genre.');
+    }
+});
+
+// UPDATE
+app.post('/genres/update', async function (req, res) {
+    try {
+        const { genreID, genreName } = req.body;
+        const query = `UPDATE Genres SET genreName = ? WHERE genreID = ?;`;
+        await db.query(query, [genreName, genreID]);
+        res.redirect('/genres');
+    } catch (error) {
+        console.error('Error updating genre:', error);
+        res.status(500).send('An error occurred while updating the genre.');
+    }
+});
+
+// DELETE
+app.post('/genres/delete', async function (req, res) {
+    try {
+        const { genreID } = req.body;
+        const query = `DELETE FROM Genres WHERE genreID = ?;`;
+        await db.query(query, [genreID]);
+        res.redirect('/genres');
+    } catch (error) {
+        console.error('Error deleting genre:', error);
+        res.status(500).send('Could not delete genre. It may be associated with books.');
+    }
+});
+
+// ============ PATRONS CRUD ==============
+// CREATE
+app.post('/patrons/add', async function (req, res) {
+    try {
+        const { libraryCardNumber, firstName, lastName, email, phone } = req.body;
+        const query = `INSERT INTO Patrons (libraryCardNumber, firstName, lastName, email, phone) VALUES (?, ?, ?, ?, ?);`;
+        await db.query(query, [libraryCardNumber, firstName, lastName, email, phone || null]);
+        res.redirect('/patrons');
+    } catch (error) {
+        console.error('Error inserting patron:', error);
+        res.status(500).send('An error occurred while inserting the patron.');
+    }
+});
+
+// UPDATE
+app.post('/patrons/update', async function (req, res) {
+    try {
+        const { patronID, libraryCardNumber, firstName, lastName, email, phone } = req.body;
+        const query = `UPDATE Patrons SET libraryCardNumber = ?, firstName = ?, lastName = ?, email = ?, phone = ? WHERE patronID = ?;`;
+        await db.query(query, [libraryCardNumber, firstName, lastName, email, phone || null, patronID]);
+        res.redirect('/patrons');
+    } catch (error) {
+        console.error('Error updating patron:', error);
+        res.status(500).send('An error occurred while updating the patron.');
+    }
+});
+
+// DELETE
+app.post('/patrons/delete', async function (req, res) {
+    try {
+        const { patronID } = req.body;
+        const query = `DELETE FROM Patrons WHERE patronID = ?;`;
+        await db.query(query, [patronID]);
+        res.redirect('/patrons');
+    } catch (error) {
+        console.error('Error deleting patron:', error);
+        res.status(500).send('Could not delete patron. They may have active loans.');
+    }
+});
+
+// ============ LOANS CRUD ==============
+// CREATE
+app.post('/loans/add', async function (req, res) {
+    try {
+        const { copyID, patronID, checkoutDate, dueDate, status } = req.body;
+        const query = `INSERT INTO Loans (copyID, patronID, checkoutDate, dueDate, status) VALUES (?, ?, ?, ?, ?);`;
+        await db.query(query, [copyID, patronID, checkoutDate, dueDate, status]);
+        res.redirect('/loans');
+    } catch (error) {
+        console.error('Error inserting loan:', error);
+        res.status(500).send('An error occurred while inserting the loan.');
+    }
+});
+
+// UPDATE
+app.post('/loans/update', async function (req, res) {
+    try {
+        const { loanID, returnDate, lateFee, status } = req.body;
+        const query = `UPDATE Loans SET returnDate = ?, lateFee = ?, status = ? WHERE loanID = ?;`;
+        await db.query(query, [returnDate || null, lateFee || 0, status, loanID]);
+        res.redirect('/loans');
+    } catch (error) {
+        console.error('Error updating loan:', error);
+        res.status(500).send('An error occurred while updating the loan.');
+    }
+});
+
+// DELETE
+app.post('/loans/delete', async function (req, res) {
+    try {
+        const { loanID } = req.body;
+        const query = `DELETE FROM Loans WHERE loanID = ?;`;
+        await db.query(query, [loanID]);
+        res.redirect('/loans');
+    } catch (error) {
+        console.error('Error deleting loan:', error);
+        res.status(500).send('An error occurred while deleting the loan.');
+    }
+});
+
+// ============ RESET Routes ===============
 app.get('/reset-database', async function (req, res) {
     try {
         // Call the stored procedure to reset the database

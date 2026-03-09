@@ -19,9 +19,8 @@
             <td>{{this.firstName}}</td>
             <td>{{this.lastName}}</td>
             <td>{{this.birthYear}}</td>
-
-            {{! DELETE form }}
             <td>
+                {{! DELETE form }}
                 <form class="inlineForm" action="/authors/delete" method="POST">
                     <input type="hidden" name="authorID" value="{{this.authorID}}" />
                     <button type="submit" onclick="return confirm('Delete {{this.firstName}} {{this.lastName}}?');">
@@ -36,7 +35,7 @@
 
 {{! CREATE form }}
 <h2>Add New Author</h2>
-<form class="cuForm" id="create_author_form" action="/authors" method="POST">
+<form class="cuForm" id="create_author_form" action="/authors/add" method="POST">
     <label for="firstName">First Name: </label>
     <input type="text" name="firstName" id="firstName" required />
 
