@@ -173,7 +173,7 @@ app.get('/patrons', async function (req, res) {
     }
 }); 
 
-// ============ AUTHORS CRUD ==============
+// ============ AUTHORS CUD ==============
 // CREATE
 app.post('/authors/add', async function (req, res) {
     try {
@@ -213,7 +213,7 @@ app.post('/authors/delete', async function (req, res) {
     }
 });
 
-// ============ BOOKS CRUD ==============
+// ============ BOOKS CUD ==============
 // CREATE
 app.post('/books/add', async function (req, res) {
     try {
@@ -253,7 +253,7 @@ app.post('/books/delete', async function (req, res) {
     }
 });
 
-// ============ BOOKAUTHORS CRUD ==============
+// ============ BOOKAUTHORS CUD ==============
 // CREATE
 app.post('/book_authors/add', async function (req, res) {
     try {
@@ -293,7 +293,7 @@ app.post('/book_authors/delete', async function (req, res) {
     }
 });
 
-// ============ BOOKGENRES CRUD ==============
+// ============ BOOKGENRES CUD ==============
 // CREATE
 app.post('/book_genres/add', async function (req, res) {
     try {
@@ -333,7 +333,7 @@ app.post('/book_genres/delete', async function (req, res) {
     }
 });
 
-// ============ BOOKCOPIES CRUD ==============
+// ============ BOOKCOPIES CUD ==============
 // CREATE
 app.post('/book_copies/add', async function (req, res) {
     try {
@@ -373,7 +373,7 @@ app.post('/book_copies/delete', async function (req, res) {
     }
 });
 
-// ============ GENRES CRUD ==============
+// ============ GENRES CUD ==============
 // CREATE
 app.post('/genres/add', async function (req, res) {
     try {
@@ -413,7 +413,7 @@ app.post('/genres/delete', async function (req, res) {
     }
 });
 
-// ============ PATRONS CRUD ==============
+// ============ PATRONS CUD ==============
 // CREATE
 app.post('/patrons/add', async function (req, res) {
     try {
@@ -453,7 +453,7 @@ app.post('/patrons/delete', async function (req, res) {
     }
 });
 
-// ============ LOANS CRUD ==============
+// ============ LOANS CUD ==============
 // CREATE
 app.post('/loans/add', async function (req, res) {
     try {
