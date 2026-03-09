@@ -52,26 +52,49 @@ app.get('/authors', async function (req, res) {
 
 app.get('/books', async function (req, res) {
     try {
-        // Get Data
-        const query = 'SELECT bookID, ISBN, title, publicationYear, publisher, bookMedia FROM Books;';
-        // Returns [rows, fields]
+        const query = `
+            SELECT
+                b.bookID,
+                b.ISBN,
+                b.title,
+                b.publicationYear,
+                b.publisher,
+                b.bookMedia,
+                COALESCE(GROUP_CONCAT(DISTINCT CONCAT(a.firstName, ' ', a.lastName) SEPARATOR ', '), 'None') AS authors,
+                COALESCE(GROUP_CONCAT(DISTINCT g.genreName SEPARATOR ', '), 'None') AS genres
+            FROM Books b
+            LEFT JOIN BookAuthors ba ON b.bookID = ba.bookID
+            LEFT JOIN Authors a ON ba.authorID = a.authorID
+            LEFT JOIN BookGenres bg ON b.bookID = bg.bookID
+            LEFT JOIN Genres g ON bg.genreID = g.genreID
+            GROUP BY b.bookID, b.ISBN, b.title, b.publicationYear, b.publisher, b.bookMedia
+            ORDER BY b.bookID;
+        `;
         const [rows] = await db.query(query);
         res.render('books', { books: rows });
     } catch (error) {
-        console.error('Error rendering page:', error);
+        console.error('Error rendering books page:', error);
         res.status(500).send('An error occurred while rendering the page.');
     }
 });    
 
 app.get('/book_authors', async function (req, res) {
     try {
-        // Get Data
-        const query = 'SELECT bookID, authorID FROM BookAuthors;';
-        // Returns [rows, fields]
+        const query = `
+            SELECT
+                ba.bookID,
+                b.title,
+                ba.authorID,
+                CONCAT(a.firstName, ' ', a.lastName) AS authorName
+            FROM BookAuthors ba
+            JOIN Books b ON ba.bookID = b.bookID
+            JOIN Authors a ON ba.authorID = a.authorID
+            ORDER BY ba.bookID, ba.authorID;
+        `;
         const [rows] = await db.query(query);
         res.render('book_authors', { book_authors: rows });
     } catch (error) {
-        console.error('Error rendering page:', error);
+        console.error('Error rendering book_authors page:', error);
         res.status(500).send('An error occurred while rendering the page.');
     }
 });    
@@ -91,16 +114,24 @@ app.get('/book_copies', async function (req, res) {
 
 app.get('/book_genres', async function (req, res) {
     try {
-        // Get Data
-        const query = 'SELECT bookID, genreID FROM BookGenres;';
-        // Returns [rows, fields]
+        const query = `
+            SELECT
+                bg.bookID,
+                b.title,
+                bg.genreID,
+                g.genreName
+            FROM BookGenres bg
+            JOIN Books b ON bg.bookID = b.bookID
+            JOIN Genres g ON bg.genreID = g.genreID
+            ORDER BY bg.bookID, bg.genreID;
+        `;
         const [rows] = await db.query(query);
         res.render('book_genres', { book_genres: rows });
     } catch (error) {
-        console.error('Error rendering page:', error);
+        console.error('Error rendering book_genres page:', error);
         res.status(500).send('An error occurred while rendering the page.');
     }
-});   
+});  
 
 app.get('/genres', async function (req, res) {
     try {

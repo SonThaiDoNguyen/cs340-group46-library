@@ -5,7 +5,9 @@
     <thead>
         <tr>
             <th>Book ID</th>
+            <th>Book Title</th>
             <th>Genre ID</th>
+            <th>Genre Name</th>
             <th></th>
         </tr>
     </thead>
@@ -14,7 +16,9 @@
         {{#each book_genres}}
         <tr>
             <td>{{this.bookID}}</td>
+            <td>{{this.title}}</td>
             <td>{{this.genreID}}</td>
+            <td>{{this.genreName}}</td>
 
             {{! DELETE form}}
             <form id='delete_book_genre_form'>

@@ -5,7 +5,9 @@
     <thead>
         <tr>
             <th>Book ID</th>
+            <th>Book Title</th>
             <th>Author ID</th>
+            <th>Author Name</th>
             <th></th>
         </tr>
     </thead>
@@ -13,7 +15,9 @@
         {{#each book_authors}}
         <tr>
             <td>{{this.bookID}}</td>
+            <td>{{this.title}}</td>
             <td>{{this.authorID}}</td>
+            <td>{{this.authorName}}</td>
 
             {{! DELETE form}}
             <form id='delete_book_author_form'>
