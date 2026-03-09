@@ -92,7 +92,16 @@ app.get('/book_authors', async function (req, res) {
             ORDER BY ba.bookID, ba.authorID;
         `;
         const [rows] = await db.query(query);
-        res.render('book_authors', { book_authors: rows });
+
+        // Get books for dropdown
+        const booksQuery = 'SELECT bookID, title FROM Books ORDER BY title;';
+        const [books] = await db.query(booksQuery);
+
+        // Get authors for dropdown
+        const authorsQuery = 'SELECT authorID, firstName, lastName FROM Authors ORDER BY lastName, firstName;';
+        const [authors] = await db.query(authorsQuery);
+
+        res.render('book_authors', { book_authors: rows, books: books, authors: authors });
     } catch (error) {
         console.error('Error rendering book_authors page:', error);
         res.status(500).send('An error occurred while rendering the page.');
@@ -122,7 +131,7 @@ app.get('/book_copies', async function (req, res) {
 });      
 
 app.get('/book_genres', async function (req, res) {
-    try {
+    try { 
         const query = `
             SELECT
                 bg.bookID,
@@ -135,7 +144,16 @@ app.get('/book_genres', async function (req, res) {
             ORDER BY bg.bookID, bg.genreID;
         `;
         const [rows] = await db.query(query);
-        res.render('book_genres', { book_genres: rows });
+
+        // Get books for dropdown
+        const booksQuery = 'SELECT bookID, title FROM Books ORDER BY title;';
+        const [books] = await db.query(booksQuery);
+
+        // Get genres for dropdown
+        const genresQuery = 'SELECT genreID, genreName FROM Genres ORDER BY genreName;';
+        const [genres] = await db.query(genresQuery);
+
+        res.render('book_genres', { book_genres: rows, books: books, genres: genres });
     } catch (error) {
         console.error('Error rendering book_genres page:', error);
         res.status(500).send('An error occurred while rendering the page.');
@@ -157,12 +175,34 @@ app.get('/genres', async function (req, res) {
 
 app.get('/loans', async function (req, res) {
     try {
-        // Get Data
-        const query = 'SELECT loanID, copyID, patronID, checkoutDate, dueDate, returnDate, lateFee, status FROM Loans;';
-        // Returns [rows, fields]
+        const query = `
+            SELECT l.loanID, l.copyID, b.title as bookTitle, 
+                   l.patronID, p.firstName, p.lastName, 
+                   l.checkoutDate, l.dueDate, l.returnDate, l.lateFee, l.status
+            FROM Loans l
+            JOIN BookCopies bc ON l.copyID = bc.copyID
+            JOIN Books b ON bc.bookID = b.bookID
+            JOIN Patrons p ON l.patronID = p.patronID
+            ORDER BY l.loanID;
+        `;
         const [rows] = await db.query(query);
+
+        // Get available copies for dropdown 
+        const copiesQuery = `
+            SELECT bc.copyID, b.title
+            FROM BookCopies bc
+            JOIN Books b ON bc.bookID = b.bookID
+            WHERE bc.status = 'Available'
+            ORDER BY b.title;
+        `;
+        const [availableCopies] = await db.query(copiesQuery);
+
+        // Get patrons for dropdown
+        const patronsQuery = 'SELECT patronID, firstName, lastName FROM Patrons ORDER BY lastName, firstName;';
+        const [patrons] = await db.query(patronsQuery);
+
         const deletedDemo = req.query.deleted === 'demo';
-        res.render('loans', { loans: rows, deletedDemo: deletedDemo });
+        res.render('loans', { loans: rows, availableCopies: availableCopies, patrons: patrons, deletedDemo: deletedDemo });
     } catch (error) {
         console.error('Error rendering page:', error);
         res.status(500).send('An error occurred while rendering the page.');
