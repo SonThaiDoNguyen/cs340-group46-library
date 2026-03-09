@@ -101,16 +101,25 @@ app.get('/book_authors', async function (req, res) {
 
 app.get('/book_copies', async function (req, res) {
     try {
-        // Get Data
-        const query = 'SELECT copyID, bookID, acquisitionDate, `condition`, location, status FROM BookCopies;';
-        // Returns [rows, fields]
+        // Get BookCopies data with joined book titles
+        const query = `
+            SELECT bc.copyID, bc.bookID, b.title, bc.acquisitionDate, bc.\`condition\`, bc.location, bc.status
+            FROM BookCopies bc
+            JOIN Books b ON bc.bookID = b.bookID
+            ORDER BY bc.copyID;
+        `;
         const [rows] = await db.query(query);
-        res.render('book_copies', { book_copies: rows });
+
+        // Get books for dropdown
+        const booksQuery = 'SELECT bookID, title FROM Books ORDER BY title;';
+        const [books] = await db.query(booksQuery);
+
+        res.render('book_copies', { book_copies: rows, books: books, copies: rows });
     } catch (error) {
         console.error('Error rendering page:', error);
         res.status(500).send('An error occurred while rendering the page.');
     }
-});    
+});      
 
 app.get('/book_genres', async function (req, res) {
     try {
