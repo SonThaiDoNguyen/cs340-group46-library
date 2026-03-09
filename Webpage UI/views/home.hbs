@@ -12,15 +12,14 @@
 
     {{!RESET button section}}
     <div class="reset-section">
-      <h2>Database Reset Functionality</h2>
+      <h2>CRUD Demo Test</h2>
+      <h3> Reset The Database</h3>
       <p>Click the button below to reset the database to its original sample data state:</p>
       <a href="/reset-database" onclick="return confirm('WARNING: This will delete all changes and restore the database to its original same data. Are you sure?')">
-        <button>
-          RESET Database
-        </button>
+        <button>RESET Database</button>
       </a>
 
-      <h3>Demo: Test the RESET function</h3>
+      <h3>Delete Test</h3>
       <p>To verify the RESET works:</p>
       <ol>
         <li>Click the "Delete Demo Loan" link below to remove one loan record</li>
@@ -29,9 +28,7 @@
         <li>Return to the <a href="/loans">Loans page</a> - the loan should be restored!</li>
       </ol>
       <a href="/delete-demo-loan" onclick="return confirm('Delete the demo loan to test RESET functionality?')">
-        <button>
-          Delete Demo Loan
-        </button>
+        <button>Delete Demo Loan</button>
       </a>
     </div>
 
