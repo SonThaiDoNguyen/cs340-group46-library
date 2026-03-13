@@ -68,7 +68,7 @@
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
-    /* Form labels */
+/* Form labels */
 
     label {
         font-weight: bold;
@@ -111,5 +111,7 @@
 /* Divs */
 
     #tableofcontents{
-        background-color:brown;
+        background-color:bisque;
+        display:block;
+        width: 40%;      
     }

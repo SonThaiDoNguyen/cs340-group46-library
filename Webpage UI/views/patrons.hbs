@@ -60,6 +60,7 @@
 
 {{! UPDATE form }}
 <h2>Update a Patron</h2>
+<!-- Patron to Update Form with Dropdown -->
 <form class="cuForm" id="update_patron_form" action="/patrons/update" method="POST">
     <label for="update_patron_id">Patron to Update: </label>
     <select name="patronID" id="update_patron_id" required>
@@ -71,18 +72,23 @@
         {{/each}}
     </select>
 
+    <!-- Library Card # -->
     <label for="update_libraryCardNumber">Library Card #: </label>
     <input type="text" name="libraryCardNumber" id="update_libraryCardNumber" required />
 
+    <!-- First Name -->
     <label for="update_firstName">First Name: </label>
     <input type="text" name="firstName" id="update_firstName" required />
 
+    <!-- Last Name -->
     <label for="update_lastName">Last Name: </label>
     <input type="text" name="lastName" id="update_lastName" required />
 
+    <!-- Email -->
     <label for="update_email">Email: </label>
     <input type="email" name="email" id="update_email" required />
 
+    <!-- Phone # -->
     <label for="update_phone">Phone: </label>
     <input type="text" name="phone" id="update_phone" />
 

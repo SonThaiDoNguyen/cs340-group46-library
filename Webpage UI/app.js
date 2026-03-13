@@ -1,3 +1,8 @@
+// Citation for the following file:
+// Date: 2/19/2026
+// Adapted base from Lecture code
+
+
 // ########################################
 // ########## SETUP
 
@@ -45,7 +50,7 @@ app.get('/authors', async function (req, res) {
         res.status(500).send('An error occurred while rendering the page.');
     }
 });
-    // Citation for the following:
+    // Citation for the following method:
     // Date: 2/19/2026
     // Adapted from Prompt: *insert lecture code* I need to add Sql sample data to this. Describe how I would do it*
     // Source URL: https://chatgpt.com/
