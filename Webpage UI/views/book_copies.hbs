@@ -25,6 +25,7 @@
             <td>{{this.condition}}</td>
             <td>{{this.location}}</td>
             <td>{{this.status}}</td>
+
             <td>
                 {{! DELETE form }}
                 <form class="inlineForm" action="/book_copies/delete" method="POST">
@@ -34,6 +35,7 @@
                     </button>
                 </form>
             </td>
+
         </tr>
         {{/each}}
     </tbody>
@@ -90,7 +92,7 @@
     <label for="update_copy_id">Copy to Update: </label>
     <select name="copyID" id="update_copy_id" required>
         <option value="" disabled selected>Select a Copy</option>
-        {{#each copies}}
+        {{#each books}}
         <option value="{{this.copyID}}">
             ID: {{this.copyID}} - {{this.title}} ({{this.condition}})
         </option>

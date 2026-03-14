@@ -11,6 +11,7 @@
             <th></th>
         </tr>
     </thead>
+
     <tbody>
         {{#each book_authors}}
         <tr>
@@ -18,6 +19,7 @@
             <td>{{this.title}}</td>
             <td>{{this.authorID}}</td>
             <td>{{this.authorName}}</td>
+
             <td>
                 {{! DELETE form}}
                 <form class="inlineForm" action="/book_authors/delete" method="POST">
@@ -28,6 +30,7 @@
                     </button>
                 </form>
             </td>
+
         </tr>
         {{/each}}
     </tbody>
@@ -40,7 +43,7 @@
     <select name="bookID" id="bookID" required>
         <option value="" disabled selected>Select a Book</option>
         {{#each books}}
-        <option value="{{this.bookID}}">{{this.title}}</option>
+        <option value="{{this.bookID}}">{{this.bookID}} - {{this.title}}</option>
         {{/each}}
     </select>
 
@@ -48,7 +51,7 @@
     <select name="authorID" id="authorID" required>
         <option value="" disabled selected>Select an Author</option>
         {{#each authors}}
-        <option value="{{this.authorID}}">{{this.firstName}} {{this.lastName}}</option>
+        <option value="{{this.authorID}}">{{this.authorName}}</option>
         {{/each}}
     </select>
 
@@ -70,15 +73,15 @@
     <select name="old_authorID" id="old_author_id" required>
         <option value="" disabled selected>Select Current Author</option>
         {{#each authors}}
-        <option value="{{this.authorID}}">{{this.firstName}} {{this.lastName}}</option>
+        <option value="{{this.authorID}}">{{this.authorName}}</option>
         {{/each}}
     </select>
 
     <label for="new_author_id">New Author: </label>
     <select name="new_authorID" id="new_author_id" required>
         <option value="" disabled selected>Select New Author</option>
-        {{#each authors}}
-        <option value="{{this.authorID}}">{{this.firstName}} {{this.lastName}}</option>
+        {{#each book_authors}}
+        <option value="{{this.authorID}}">{{this.authorName}}</option>
         {{/each}}
     </select>
 

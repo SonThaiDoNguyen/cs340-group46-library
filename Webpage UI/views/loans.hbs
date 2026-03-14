@@ -50,28 +50,34 @@
 {{! CREATE form }}
 <h2>Create New Loan</h2>
 <form class="cuForm" id="create_loan_form" action="/loans/add" method="POST">
+
+    <!-- Book Copy -->
     <label for="copyID">Book Copy: </label>
     <select name="copyID" id="copyID" required>
         <option value="" disabled selected>Select a Copy</option>
-        {{#each availableCopies}}
+        {{#each loans}}
         <option value="{{this.copyID}}">{{this.title}} (ID: {{this.copyID}})</option>
         {{/each}}
     </select>
 
+    <!-- Patron -->
     <label for="patronID">Patron: </label>
     <select name="patronID" id="patronID" required>
         <option value="" disabled selected>Select a Patron</option>
-        {{#each patrons}}
-        <option value="{{this.patronID}}">{{this.firstName}} {{this.lastName}}</option>
+        {{#each loans}}
+        <option value="{{this.patronID}}">{{this.patronID}}</option>
         {{/each}}
     </select>
 
+    <!-- Checkout Date -->
     <label for="checkoutDate">Checkout Date: </label>
     <input type="date" name="checkoutDate" id="checkoutDate" required />
 
+    <!-- Due Date -->
     <label for="dueDate">Due Date: </label>
     <input type="date" name="dueDate" id="dueDate" required />
 
+    <!-- Status -->
     <label for="status">Status: </label>
     <select name="status" id="status" required>
         <option value="" disabled selected>Select Status</option>
@@ -87,6 +93,8 @@
 {{! UPDATE form }}
 <h2>Update a Loan</h2>
 <form class="cuForm" id="update_loan_form" action="/loans/update" method="POST">
+
+    <!-- Loan to Update -->
     <label for="update_loan_id">Loan to Update: </label>
     <select name="loanID" id="update_loan_id" required>
         <option value="" disabled selected>Select a Loan</option>
@@ -97,12 +105,15 @@
         {{/each}}
     </select>
 
+    <!-- Return Date -->
     <label for="update_returnDate">Return Date: </label>
     <input type="date" name="returnDate" id="update_returnDate" />
 
+    <!-- Late Fee ($)-->
     <label for="update_lateFee">Late Fee ($): </label>
     <input type="number" name="lateFee" id="update_lateFee" min="0" step="0.01" value="0" />
 
+    <!-- Status -->
     <label for="update_status">Status: </label>
     <select name="status" id="update_status" required>
         <option value="" disabled selected>Select Status</option>
