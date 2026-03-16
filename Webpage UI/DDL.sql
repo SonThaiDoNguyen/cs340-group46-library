@@ -134,7 +134,7 @@ INSERT INTO Patrons (libraryCardNumber, firstName, lastName, email, phone) VALUE
 -- Authors
 INSERT INTO Authors (firstName, lastName, birthYear) VALUES
 ('J.K.', 'Rowling', 1965),
-('Stephen', 'King', 1947);
+('Stephen', 'King', 1947),
 ('H.P.', 'Lovecraft', 1890);
 
 -- Genres
