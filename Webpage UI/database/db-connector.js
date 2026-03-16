@@ -1,3 +1,7 @@
+// Citation for the following file:
+//    Date: 2/19/2026
+//    Adapted base from Lecture code
+
 // Get an instance of mysql we can use in the app
 let mysql = require('mysql2')
 
