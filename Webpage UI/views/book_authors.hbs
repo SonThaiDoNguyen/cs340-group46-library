@@ -40,7 +40,6 @@
 <h2>Add Book-Author Relationship</h2>
 <form class="cuForm" id="create_book_author_form" action="/book_authors/add" method="POST">
     <label for="bookID">Book: </label>
-    <p>Books count: {{books.length}}</p>
     <select name="bookID" id="bookID" required>
         <option value="" disabled selected>Select a Book</option>
         {{#each books}}
@@ -52,7 +51,7 @@
     <select name="authorID" id="authorID" required>
         <option value="" disabled selected>Select an Author</option>
         {{#each authors}}
-        <option value="{{this.authorID}}">{{this.authorName}}</option>
+        <option value="{{this.authorID}}">{{this.firstName}} {{this.lastName}}</option>
         {{/each}}
     </select>
 
@@ -74,15 +73,15 @@
     <select name="old_authorID" id="old_author_id" required>
         <option value="" disabled selected>Select Current Author</option>
         {{#each authors}}
-        <option value="{{this.authorID}}">{{this.authorName}}</option>
+        <option value="{{this.authorID}}">{{this.authorID}}</option>
         {{/each}}
     </select>
 
     <label for="new_author_id">New Author: </label>
     <select name="new_authorID" id="new_author_id" required>
         <option value="" disabled selected>Select New Author</option>
-        {{#each book_authors}}
-        <option value="{{this.authorID}}">{{this.authorName}}</option>
+        {{#each authors}}
+        <option value="{{this.authorID}}">{{this.authorID}}</option>
         {{/each}}
     </select>
 
