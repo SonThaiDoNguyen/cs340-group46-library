@@ -45,7 +45,7 @@ app.get('/', async function (req, res) {
 app.get('/authors', async function (req, res) {
     try {
         // Get Data
-        const query = 'SELECT authorID, firstName, lastName, birthYear FROM Authors ORDER BY author ID;';
+        const query = 'SELECT authorID, firstName, lastName, birthYear FROM Authors ORDER BY authorID;';
         // Returns [rows, fields]
         const [rows] = await db.query(query);
         res.render('authors', { authors: rows });
@@ -551,7 +551,7 @@ app.post('/loans/delete', async function (req, res) {
 app.get('/reset-database', async function (req, res) {
     try {
         // Call the stored procedure to reset the database
-        const query = 'CALL sp_reset_library();'
+        const query = 'CALL sp_reset_library();';
         await db.query(query);
         
         // Redirect to home page with success message
