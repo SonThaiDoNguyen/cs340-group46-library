@@ -1,3 +1,12 @@
+// Citation for the following file:
+// Date: 2/19/2026
+// Adapted base from Lecture code
+// 
+// Additional citations:
+// Complex query adapted with assistance from ChatGPT
+// Adapted from Prompt: *insert lecture code* I need to add Sql sample data to this. Describe how I would do it*
+// Source: https://chatgpt.com/
+
 // ########################################
 // ########## SETUP
 
@@ -36,7 +45,7 @@ app.get('/', async function (req, res) {
 app.get('/authors', async function (req, res) {
     try {
         // Get Data
-        const query = 'SELECT authorID, firstName, lastName, birthYear FROM Authors;';
+        const query = 'SELECT authorID, firstName, lastName, birthYear FROM Authors ORDER BY author ID;';
         // Returns [rows, fields]
         const [rows] = await db.query(query);
         res.render('authors', { authors: rows });
@@ -45,10 +54,6 @@ app.get('/authors', async function (req, res) {
         res.status(500).send('An error occurred while rendering the page.');
     }
 });
-    // Citation for the following:
-    // Date: 2/19/2026
-    // Adapted from Prompt: *insert lecture code* I need to add Sql sample data to this. Describe how I would do it*
-    // Source URL: https://chatgpt.com/
 
 app.get('/books', async function (req, res) {
     try {
@@ -163,7 +168,7 @@ app.get('/book_genres', async function (req, res) {
 app.get('/genres', async function (req, res) {
     try {
         // Get Data
-        const query = 'SELECT genreID, genreName FROM Genres;';
+        const query = 'SELECT genreID, genreName FROM Genres ORDER BY genreID;';
         // Returns [rows, fields]
         const [rows] = await db.query(query);
         res.render('genres', { genres: rows });
@@ -212,7 +217,7 @@ app.get('/loans', async function (req, res) {
 app.get('/patrons', async function (req, res) {
     try {
         // Get Data
-        const query = 'SELECT patronID, libraryCardNumber, firstName, lastName, email, phone FROM Patrons;';
+        const query = 'SELECT patronID, libraryCardNumber, firstName, lastName, email, phone FROM Patrons ORDER BY patronID;';
         // Returns [rows, fields]
         const [rows] = await db.query(query);
         res.render('patrons', { patrons: rows });
@@ -227,7 +232,7 @@ app.get('/patrons', async function (req, res) {
 app.post('/authors/add', async function (req, res) {
     try {
         const { firstName, lastName, birthYear } = req.body;
-        const query = `INSERT INTO Authors (firstName, lastName, birthYear) VALUES (?, ?, ?);`;
+        const query = `CALL sp_insert_author(?, ?, ?);`;
         await db.query(query, [firstName, lastName, birthYear || null]);
         res.redirect('/authors');
     } catch (error) {
@@ -240,8 +245,8 @@ app.post('/authors/add', async function (req, res) {
 app.post('/authors/update', async function (req, res) {
     try {
         const { authorID, firstName, lastName, birthYear } = req.body;
-        const query = `UPDATE Authors SET firstName = ?, lastName = ?, birthYear = ? WHERE authorID = ?;`;
-        await db.query(query, [firstName, lastName, birthYear || null, authorID]);
+        const query = `CALL sp_update_author(?, ?, ?, ?);`;
+        await db.query(query, [authorID, firstName, lastName, birthYear || null]);
         res.redirect('/authors');
     } catch (error) {
         console.error('Error updating author:', error);
@@ -253,7 +258,7 @@ app.post('/authors/update', async function (req, res) {
 app.post('/authors/delete', async function (req, res) {
     try {
         const { authorID } = req.body;
-        const query = `DELETE FROM Authors WHERE authorID = ?;`;
+        const query = `CALL sp_delete_author(?);`;
         await db.query(query, [authorID]);
         res.redirect('/authors');
     } catch (error) {
@@ -267,7 +272,7 @@ app.post('/authors/delete', async function (req, res) {
 app.post('/books/add', async function (req, res) {
     try {
         const { ISBN, title, publicationYear, publisher, bookMedia } = req.body;
-        const query = `INSERT INTO Books (ISBN, title, publicationYear, publisher, bookMedia) VALUES (?, ?, ?, ?, ?);`;
+        const query = `CALL sp_insert_book(?, ?, ?, ?, ?);`;
         await db.query(query, [ISBN, title, publicationYear || null, publisher || null, bookMedia]);
         res.redirect('/books');
     } catch (error) {
@@ -280,8 +285,8 @@ app.post('/books/add', async function (req, res) {
 app.post('/books/update', async function (req, res) {
     try {
         const { bookID, ISBN, title, publicationYear, publisher, bookMedia } = req.body;
-        const query = `UPDATE Books SET ISBN = ?, title = ?, publicationYear = ?, publisher = ?, bookMedia = ? WHERE bookID = ?;`;
-        await db.query(query, [ISBN, title, publicationYear || null, publisher || null, bookMedia, bookID]);
+        const query = `CALL sp_update_book(?, ?, ?, ?, ?, ?);`;
+        await db.query(query, [bookID, ISBN, title, publicationYear || null, publisher || null, bookMedia]);
         res.redirect('/books');
     } catch (error) {
         console.error('Error updating book:', error);
@@ -293,7 +298,7 @@ app.post('/books/update', async function (req, res) {
 app.post('/books/delete', async function (req, res) {
     try {
         const { bookID } = req.body;
-        const query = `DELETE FROM Books WHERE bookID = ?;`;
+        const query = `CALL sp_delete_book(?);`;
         await db.query(query, [bookID]);
         res.redirect('/books');
     } catch (error) {
@@ -307,7 +312,7 @@ app.post('/books/delete', async function (req, res) {
 app.post('/book_authors/add', async function (req, res) {
     try {
         const { bookID, authorID } = req.body;
-        const query = `INSERT INTO BookAuthors (bookID, authorID) VALUES (?, ?);`;
+        const query = `CALL sp_insert_bookauthor(?, ?);`;
         await db.query(query, [bookID, authorID]);
         res.redirect('/book_authors');
     } catch (error) {
@@ -320,8 +325,8 @@ app.post('/book_authors/add', async function (req, res) {
 app.post('/book_authors/update', async function (req, res) {
     try {
         const { bookID, old_authorID, new_authorID } = req.body;
-        const query = `UPDATE BookAuthors SET authorID = ? WHERE bookID = ? AND authorID = ?;`;
-        await db.query(query, [new_authorID, bookID, old_authorID]);
+        const query = `CALL sp_update_bookauthor(?, ?, ?);`;
+        await db.query(query, [bookID, old_authorID, new_authorID]);
         res.redirect('/book_authors');
     } catch (error) {
         console.error('Error updating book-author relationship:', error);
@@ -333,7 +338,7 @@ app.post('/book_authors/update', async function (req, res) {
 app.post('/book_authors/delete', async function (req, res) {
     try {
         const { bookID, authorID } = req.body;
-        const query = `DELETE FROM BookAuthors WHERE bookID = ? AND authorID = ?;`;
+        const query = `CALL sp_delete_bookauthor(?, ?);`;
         await db.query(query, [bookID, authorID]);
         res.redirect('/book_authors');
     } catch (error) {
@@ -347,7 +352,7 @@ app.post('/book_authors/delete', async function (req, res) {
 app.post('/book_genres/add', async function (req, res) {
     try {
         const { bookID, genreID } = req.body;
-        const query = `INSERT INTO BookGenres (bookID, genreID) VALUES (?, ?);`;
+        const query = `CALL sp_insert_bookgenre(?, ?);`;
         await db.query(query, [bookID, genreID]);
         res.redirect('/book_genres');
     } catch (error) {
@@ -360,8 +365,8 @@ app.post('/book_genres/add', async function (req, res) {
 app.post('/book_genres/update', async function (req, res) {
     try {
         const { bookID, old_genreID, new_genreID } = req.body;
-        const query = `UPDATE BookGenres SET genreID = ? WHERE bookID = ? AND genreID = ?;`;
-        await db.query(query, [new_genreID, bookID, old_genreID]);
+        const query = `CALL sp_update_bookgenre(?, ?, ?);`;
+        await db.query(query, [bookID, old_genreID, new_genreID]);
         res.redirect('/book_genres');
     } catch (error) {
         console.error('Error updating book-genre relationship:', error);
@@ -373,7 +378,7 @@ app.post('/book_genres/update', async function (req, res) {
 app.post('/book_genres/delete', async function (req, res) {
     try {
         const { bookID, genreID } = req.body;
-        const query = `DELETE FROM BookGenres WHERE bookID = ? AND genreID = ?;`;
+        const query = `CALL sp_delete_bookgenre(?, ?);`;
         await db.query(query, [bookID, genreID]);
         res.redirect('/book_genres');
     } catch (error) {
@@ -387,7 +392,7 @@ app.post('/book_genres/delete', async function (req, res) {
 app.post('/book_copies/add', async function (req, res) {
     try {
         const { bookID, acquisitionDate, condition, location, status } = req.body;
-        const query = `INSERT INTO BookCopies (bookID, acquisitionDate, \`condition\`, location, status) VALUES (?, ?, ?, ?, ?);`;
+        const query = `CALL sp_insert_bookcopy(?, ?, ?, ?, ?);`;
         await db.query(query, [bookID, acquisitionDate, condition, location, status]);
         res.redirect('/book_copies');
     } catch (error) {
@@ -400,8 +405,8 @@ app.post('/book_copies/add', async function (req, res) {
 app.post('/book_copies/update', async function (req, res) {
     try {
         const { copyID, bookID, acquisitionDate, condition, location, status } = req.body;
-        const query = `UPDATE BookCopies SET bookID = ?, acquisitionDate = ?, \`condition\` = ?, location = ?, status = ? WHERE copyID = ?;`;
-        await db.query(query, [bookID, acquisitionDate, condition, location, status, copyID]);
+        const query = `CALL sp_update_bookcopy(?, ?, ?, ?, ?, ?);`;
+        await db.query(query, [copyID, bookID, acquisitionDate, condition, location, status]);
         res.redirect('/book_copies');
     } catch (error) {
         console.error('Error updating book copy:', error);
@@ -413,7 +418,7 @@ app.post('/book_copies/update', async function (req, res) {
 app.post('/book_copies/delete', async function (req, res) {
     try {
         const { copyID } = req.body;
-        const query = `DELETE FROM BookCopies WHERE copyID = ?;`;
+        const query = `CALL sp_delete_bookcopy(?);`;
         await db.query(query, [copyID]);
         res.redirect('/book_copies');
     } catch (error) {
@@ -427,7 +432,7 @@ app.post('/book_copies/delete', async function (req, res) {
 app.post('/genres/add', async function (req, res) {
     try {
         const { genreName } = req.body;
-        const query = `INSERT INTO Genres (genreName) VALUES (?);`;
+        const query = `CALL sp_insert_genre(?);`;
         await db.query(query, [genreName]);
         res.redirect('/genres');
     } catch (error) {
@@ -440,8 +445,8 @@ app.post('/genres/add', async function (req, res) {
 app.post('/genres/update', async function (req, res) {
     try {
         const { genreID, genreName } = req.body;
-        const query = `UPDATE Genres SET genreName = ? WHERE genreID = ?;`;
-        await db.query(query, [genreName, genreID]);
+        const query = `CALL sp_update_genre(?, ?);`;
+        await db.query(query, [genreID, genreName]);
         res.redirect('/genres');
     } catch (error) {
         console.error('Error updating genre:', error);
@@ -453,7 +458,7 @@ app.post('/genres/update', async function (req, res) {
 app.post('/genres/delete', async function (req, res) {
     try {
         const { genreID } = req.body;
-        const query = `DELETE FROM Genres WHERE genreID = ?;`;
+        const query = `CALL sp_delete_genre(?);`;
         await db.query(query, [genreID]);
         res.redirect('/genres');
     } catch (error) {
@@ -467,7 +472,7 @@ app.post('/genres/delete', async function (req, res) {
 app.post('/patrons/add', async function (req, res) {
     try {
         const { libraryCardNumber, firstName, lastName, email, phone } = req.body;
-        const query = `INSERT INTO Patrons (libraryCardNumber, firstName, lastName, email, phone) VALUES (?, ?, ?, ?, ?);`;
+        const query = `CALL sp_insert_patron(?, ?, ?, ?, ?);`;
         await db.query(query, [libraryCardNumber, firstName, lastName, email, phone || null]);
         res.redirect('/patrons');
     } catch (error) {
@@ -480,8 +485,8 @@ app.post('/patrons/add', async function (req, res) {
 app.post('/patrons/update', async function (req, res) {
     try {
         const { patronID, libraryCardNumber, firstName, lastName, email, phone } = req.body;
-        const query = `UPDATE Patrons SET libraryCardNumber = ?, firstName = ?, lastName = ?, email = ?, phone = ? WHERE patronID = ?;`;
-        await db.query(query, [libraryCardNumber, firstName, lastName, email, phone || null, patronID]);
+        const query = `CALL sp_update_patron(?, ?, ?, ?, ?, ?);`;
+        await db.query(query, [patronID, libraryCardNumber, firstName, lastName, email, phone || null]);
         res.redirect('/patrons');
     } catch (error) {
         console.error('Error updating patron:', error);
@@ -493,7 +498,7 @@ app.post('/patrons/update', async function (req, res) {
 app.post('/patrons/delete', async function (req, res) {
     try {
         const { patronID } = req.body;
-        const query = `DELETE FROM Patrons WHERE patronID = ?;`;
+        const query = `CALL sp_delete_patron(?);`;
         await db.query(query, [patronID]);
         res.redirect('/patrons');
     } catch (error) {
@@ -507,7 +512,7 @@ app.post('/patrons/delete', async function (req, res) {
 app.post('/loans/add', async function (req, res) {
     try {
         const { copyID, patronID, checkoutDate, dueDate, status } = req.body;
-        const query = `INSERT INTO Loans (copyID, patronID, checkoutDate, dueDate, status) VALUES (?, ?, ?, ?, ?);`;
+        const query = `CALL sp_insert_loan(?, ?, ?, ?, ?);`;
         await db.query(query, [copyID, patronID, checkoutDate, dueDate, status]);
         res.redirect('/loans');
     } catch (error) {
@@ -520,8 +525,8 @@ app.post('/loans/add', async function (req, res) {
 app.post('/loans/update', async function (req, res) {
     try {
         const { loanID, returnDate, lateFee, status } = req.body;
-        const query = `UPDATE Loans SET returnDate = ?, lateFee = ?, status = ? WHERE loanID = ?;`;
-        await db.query(query, [returnDate || null, lateFee || 0, status, loanID]);
+        const query = `CALL sp_update_loan(?, ?, ?, ?);`;
+        await db.query(query, [loanID, returnDate || null, lateFee || 0, status]);
         res.redirect('/loans');
     } catch (error) {
         console.error('Error updating loan:', error);
@@ -533,7 +538,7 @@ app.post('/loans/update', async function (req, res) {
 app.post('/loans/delete', async function (req, res) {
     try {
         const { loanID } = req.body;
-        const query = `DELETE FROM Loans WHERE loanID = ?;`;
+        const query = `CALL sp_delete_loan(?);`;
         await db.query(query, [loanID]);
         res.redirect('/loans');
     } catch (error) {
@@ -546,7 +551,7 @@ app.post('/loans/delete', async function (req, res) {
 app.get('/reset-database', async function (req, res) {
     try {
         // Call the stored procedure to reset the database
-        const query = 'CALL reset_library();'
+        const query = 'CALL sp_reset_library();'
         await db.query(query);
         
         // Redirect to home page with success message
@@ -561,7 +566,7 @@ app.get('/reset-database', async function (req, res) {
 app.get('/delete-demo-loan', async function (req, res) {
     try {
         // Call the stored procedure to delete the demo loan
-        const query = 'CALL delete_demo_loan();';
+        const query = 'CALL sp_delete_demo_loan();';
         await db.query(query);
 
         // Redirect to loans page to show the change
