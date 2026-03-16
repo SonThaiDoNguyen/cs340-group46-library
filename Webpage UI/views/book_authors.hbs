@@ -40,10 +40,11 @@
 <h2>Add Book-Author Relationship</h2>
 <form class="cuForm" id="create_book_author_form" action="/book_authors/add" method="POST">
     <label for="bookID">Book: </label>
+    <p>Books count: {{books.length}}</p>
     <select name="bookID" id="bookID" required>
         <option value="" disabled selected>Select a Book</option>
         {{#each books}}
-        <option value="{{this.bookID}}">{{this.bookID}} - {{this.title}}</option>
+        <option value="{{this.bookID}}">{{this.title}}</option>
         {{/each}}
     </select>
 

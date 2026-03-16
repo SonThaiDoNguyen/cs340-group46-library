@@ -4,35 +4,16 @@
 <div class="alert alert-success">
   Database has been successfully reset!
 </div>
+
 {{/if}}
-
+{{! Home Page Desc}}
 <div class="homepageDescription">
-    <p>Group 46 - Library Database</p>
-    <p>By Joshua Cicchinelli, Mauricio Marin Gutierrez, Son Thai Do Nguyen</p>
+  <p>Group 46 - Library Database</p>
+  <p>By Joshua Cicchinelli, Mauricio Marin Gutierrez, Son Thai Do Nguyen</p>
+</div>
 
-    {{!RESET button section}}
-    <div class="reset-section">
-      <h2>CRUD Demo Test</h2>
-      <h3> Reset The Database</h3>
-      <p>Click the button below to reset the database to its original sample data state:</p>
-      <a href="/reset-database" onclick="return confirm('WARNING: This will delete all changes and restore the database to its original same data. Are you sure?')">
-        <button>RESET Database</button>
-      </a>
-
-      <h3>Delete Test</h3>
-      <p>To verify the RESET works:</p>
-      <ol>
-        <li>Click the "Delete Demo Loan" link below to remove one loan record</li>
-        <li>Visit the <a href="/loans">Loans page</a> to confirm the loan is gone</li>
-        <li>Click the RESET button above</li>
-        <li>Return to the <a href="/loans">Loans page</a> - the loan should be restored!</li>
-      </ol>
-      <a href="/delete-demo-loan" onclick="return confirm('Delete the demo loan to test RESET functionality?')">
-        <button>Delete Demo Loan</button>
-      </a>
-    </div>
-
-  <div id="tableofcontents">
+{{! Table of Contents}}
+<div id="tableofcontents">
   <h2>Index of Pages</h2>
     <h3>Home</h3>
       <p>-An index of pages</p>
@@ -52,6 +33,25 @@
       <p>-Intersection Table Associating Books and Authors</p>
     <h3>Book-Genres</h3>
       <p>-Intersection Table Associating Books and Genres</p>
-  </div>
+</div>
 
+{{!RESET button section}}
+<div class="reset-section">
+  <h2>CRUD Demo Test</h2>
+  <h3> Reset The Database</h3>
+  <p>Click the button below to reset the database to its original sample data state:</p>
+  <a href="/reset-database" onclick="return confirm('WARNING: This will delete all changes and restore the database to its original same data. Are you sure?')">
+    <button>RESET Database</button></a>
+
+  <h3>Delete Test</h3>
+  <p>To verify the RESET works:</p>
+  <ol>
+    <li>Click the "Delete Demo Loan" link below to remove one loan record</li>
+    <li>Visit the <a href="/loans">Loans page</a> to confirm the loan is gone</li>
+    <li>Click the RESET button above</li>
+    <li>Return to the <a href="/loans">Loans page</a> - the loan should be restored!</li>
+  </ol>
+  <a href="/delete-demo-loan" onclick="return confirm('Delete the demo loan to test RESET functionality?')">
+    <button>Delete Demo Loan</button>
+  </a>
 </div>
