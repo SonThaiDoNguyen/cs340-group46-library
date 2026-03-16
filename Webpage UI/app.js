@@ -1,12 +1,3 @@
-// Citation for the following file:
-// Date: 2/19/2026
-// Adapted base from Lecture code
-// 
-// Additional citations:
-// Complex query adapted with assistance from ChatGPT
-// Adapted from Prompt: *insert lecture code* I need to add Sql sample data to this. Describe how I would do it*
-// Source: https://chatgpt.com/
-
 // ########################################
 // ########## SETUP
 
@@ -54,6 +45,10 @@ app.get('/authors', async function (req, res) {
         res.status(500).send('An error occurred while rendering the page.');
     }
 });
+    // Citation for the following:
+    // Date: 2/19/2026
+    // Adapted from Prompt: *insert lecture code* I need to add Sql sample data to this. Describe how I would do it*
+    // Source URL: https://chatgpt.com/
 
 app.get('/books', async function (req, res) {
     try {

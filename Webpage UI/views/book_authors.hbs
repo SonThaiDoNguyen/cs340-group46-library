@@ -11,6 +11,7 @@
             <th></th>
         </tr>
     </thead>
+
     <tbody>
         {{#each book_authors}}
         <tr>
@@ -18,6 +19,7 @@
             <td>{{this.title}}</td>
             <td>{{this.authorID}}</td>
             <td>{{this.authorName}}</td>
+
             <td>
                 {{! DELETE form}}
                 <form class="inlineForm" action="/book_authors/delete" method="POST">
@@ -28,6 +30,7 @@
                     </button>
                 </form>
             </td>
+
         </tr>
         {{/each}}
     </tbody>
@@ -70,7 +73,7 @@
     <select name="old_authorID" id="old_author_id" required>
         <option value="" disabled selected>Select Current Author</option>
         {{#each authors}}
-        <option value="{{this.authorID}}">{{this.firstName}} {{this.lastName}}</option>
+        <option value="{{this.authorID}}">{{this.authorID}}</option>
         {{/each}}
     </select>
 
@@ -78,7 +81,7 @@
     <select name="new_authorID" id="new_author_id" required>
         <option value="" disabled selected>Select New Author</option>
         {{#each authors}}
-        <option value="{{this.authorID}}">{{this.firstName}} {{this.lastName}}</option>
+        <option value="{{this.authorID}}">{{this.authorID}}</option>
         {{/each}}
     </select>
 

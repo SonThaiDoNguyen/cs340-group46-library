@@ -25,6 +25,7 @@
             <td>{{this.condition}}</td>
             <td>{{this.location}}</td>
             <td>{{this.status}}</td>
+
             <td>
                 {{! DELETE form }}
                 <form class="inlineForm" action="/book_copies/delete" method="POST">
@@ -34,6 +35,7 @@
                     </button>
                 </form>
             </td>
+
         </tr>
         {{/each}}
     </tbody>
@@ -41,18 +43,22 @@
 
 {{! CREATE form }}
 <h2>Add New Book Copy</h2>
+<!-- Book -->
 <form class="cuForm" id="create_copy_form" action="/book_copies/add" method="POST">
     <label for="bookID">Book: </label>
     <select name="bookID" id="bookID" required>
         <option value="" disabled selected>Select a Book</option>
         {{#each books}}
-        <option value="{{this.bookID}}">{{this.title}} (ID: {{this.bookID}})</option>
+        <option value="{{this.bookID}}"> (ID: {{this.bookID}}) - {{this.title}}
+        </option>
         {{/each}}
     </select>
 
+    <!-- Acquisition Date -->
     <label for="acquisitionDate">Acquisition Date: </label>
     <input type="date" name="acquisitionDate" id="acquisitionDate" required />
 
+    <!-- Condition -->
     <label for="condition">Condition: </label>
     <select name="condition" id="condition" required>
         <option value="" disabled selected>Select Condition</option>
@@ -63,9 +69,11 @@
         <option value="Damaged">Damaged</option>
     </select>
 
+    <!-- Location -->
     <label for="location">Location: </label>
     <input type="text" name="location" id="location" required />
 
+    <!-- Status -->
     <label for="status">Status: </label>
     <select name="status" id="status" required>
         <option value="" disabled selected>Select Status</option>
@@ -84,7 +92,7 @@
     <label for="update_copy_id">Copy to Update: </label>
     <select name="copyID" id="update_copy_id" required>
         <option value="" disabled selected>Select a Copy</option>
-        {{#each copies}}
+        {{#each books}}
         <option value="{{this.copyID}}">
             ID: {{this.copyID}} - {{this.title}} ({{this.condition}})
         </option>

@@ -117,5 +117,56 @@ CREATE TABLE Loans (
     ON DELETE RESTRICT
 ) ENGINE=InnoDB;
 
+/* ---------------Sample Data------------ */
+
+-- Books
+INSERT INTO Books (ISBN, title, publicationYear, publisher, bookMedia) VALUES
+('9780439708180', 'Harry Potter and the Sorcerer''s Stone', 1997, 'Scholastic', 'Hardcover'),
+('9780439064873', 'Harry Potter and the Chamber of Secrets', 1998, 'Scholastic', 'Hardcover'),
+('9780307743657', 'The Shining', 1977, 'Doubleday', 'Hardcover');
+
+-- Patrons
+INSERT INTO Patrons (libraryCardNumber, firstName, lastName, email, phone) VALUES
+('LC1001', 'Mauricio', 'Gutierrez', 'mauricio.gutierrez@email.com', '5415552001'),
+('LC1002', 'Joshua', 'Cicchinelli', 'joshua.cicchinelli@email.com', '5415552002'),
+('LC1003', 'Son', 'Nguyen', 'son.nguyen@email.com', NULL);
+
+-- Authors
+INSERT INTO Authors (firstName, lastName, birthYear) VALUES
+('J.K.', 'Rowling', 1965),
+('Stephen', 'King', 1947),
+('H.P.', 'Lovecraft', 1890);
+
+-- Genres
+INSERT INTO Genres (genreName) VALUES
+('Fantasy'),
+('Horror'),
+('Fiction');
+
+-- BookCopies
+INSERT INTO BookCopies (bookID, acquisitionDate, `condition`, location, status) VALUES
+(1, '2023-03-01', 'Good', 'Shelf F1', 'Available'),
+(1, '2023-05-12', 'Worn', 'Shelf F1', 'Checked Out'),
+(2, '2022-10-10', 'Good', 'Shelf F2', 'Available'),
+(3, '2021-09-20', 'Good', 'Shelf H1', 'Available');
+
+-- BookAuthors (junction)
+INSERT INTO BookAuthors (bookID, authorID) VALUES
+(1, 1),
+(2, 1), 
+(3, 2);
+
+-- BookGenres (junction)
+INSERT INTO BookGenres (bookID, genreID) VALUES
+(1, 1),
+(2, 1),
+(3, 2);
+
+-- Loans
+INSERT INTO Loans (copyID, patronID, checkoutDate, dueDate, returnDate, lateFee, status) VALUES
+(2, 1, '2026-02-01', '2026-02-15', NULL, 0.00, 'Active'),
+(1, 2, '2025-11-01', '2025-11-15', '2025-11-14', 0.00, 'Returned'),
+(4, 3, '2025-10-10', '2025-10-24', '2025-10-30', 1.50, 'Overdue');
+
 SET FOREIGN_KEY_CHECKS = 1;
 COMMIT;
