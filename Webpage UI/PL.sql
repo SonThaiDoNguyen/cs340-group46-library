@@ -131,7 +131,7 @@ BEGIN
     INSERT INTO Patrons (libraryCardNumber, firstName, lastName, email, phone) VALUES
     ('LC1001', 'Mauricio', 'Gutierrez', 'mauricio.gutierrez@email.com', '5415552001'),
     ('LC1002', 'Joshua', 'Cicchinelli', 'joshua.cicchinelli@email.com', '5415552002'),
-    ('LC1003', 'Son', 'Nguyen', 'son.nguyen@email.com', '5415552002' );
+    ('LC1003', 'Son', 'Nguyen', 'son.nguyen@email.com', NULL );
 
     -- Authors
     INSERT INTO Authors (firstName, lastName, birthYear) VALUES
